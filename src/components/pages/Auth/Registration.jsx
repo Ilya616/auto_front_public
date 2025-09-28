@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Registration.module.scss';
+import { NavLink } from 'react-router'
 
 export default function Registration() {
   const [isActive, setIsActive] = useState(false);
@@ -41,7 +42,7 @@ export default function Registration() {
           <p><input type="text" className={styles['form__input']} placeholder="Логин" /></p>
           <p><input type="password" className={styles['form__input']} placeholder="Пароль" /></p>
           <p><button className={styles['form__btn']}>Войти</button></p>
-          <p><a href="#" className={styles['form__forgot']}>Восстановить пароль</a></p>
+          <p><NavLink to={"/auth"} className={styles['form__forgot']}>Восстановить пароль</NavLink></p>
         </form>
 
         <form className={`${styles.form} ${styles['form_signup']}`}>
