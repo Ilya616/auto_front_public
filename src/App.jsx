@@ -2,6 +2,11 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+
+import Registration from './components/pages/Auth/Auth'
+import { NavLink, Routes } from 'react-router'
+
+
 import { RouterProvider } from 'react-router'
 import {routes} from './routes'
 
@@ -13,6 +18,7 @@ function App() {
 
   return (
     <>
+
       <RouterProvider router={routes} />
 
       123
@@ -24,7 +30,6 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-    
     </>
   )
 }
