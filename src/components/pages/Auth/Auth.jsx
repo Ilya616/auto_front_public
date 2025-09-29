@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import styles from './Registration.module.scss';
+import styles from './Auth.module.scss';
 import { NavLink } from 'react-router'
 import Button from '../../UI/Button/Button';
 import SignInForm from '../../UI/Form/SignInForm';
 import SignUpForm from '../../UI/Form/SignUpForm';
 
-export default function Registration() {
+export default function Auth() {
   const [isActive, setIsActive] = useState(false);
 
   const handleSignUp = () => {

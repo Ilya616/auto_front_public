@@ -1,7 +1,7 @@
 import React from 'react'
 import Button from '../Button/Button'
 import { NavLink } from 'react-router'
-import styles from '../../pages/Auth/Registration.module.scss'
+import styles from '../../pages/Auth/Auth.module.scss'
 
 export default function Form() {
   return (
