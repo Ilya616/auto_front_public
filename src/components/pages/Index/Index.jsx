@@ -1,8 +1,14 @@
+import DefaultLayout from "../../layouts/DefaultLayout/DefaultLayout";
+
 export default function Index(){
 
     return (
         <>
-            Index page
+            <DefaultLayout>
+
+                Index page
+
+            </DefaultLayout>
         </>
     );
 
