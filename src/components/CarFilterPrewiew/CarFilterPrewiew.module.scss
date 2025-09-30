@@ -1,0 +1,10 @@
+.filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &__prewiev {
+  }
+  &__main {
+    margin: 0;
+  }
+}

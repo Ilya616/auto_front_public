@@ -1,0 +1,19 @@
+.icon_main {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+  &__content {
+    color: #a5a4a4;
+  }
+  &__icon {
+    font-size: 25px;
+    color: #000;
+  }
+}
+.icon_main:hover .icon_main__content {
+  color: red;
+}
+.icon_main:hover .icon_main__icon {
+  color: red;
+}

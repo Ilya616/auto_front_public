@@ -1,0 +1,27 @@
+#root {
+  width: 100%;
+  background-color: #f8f8f8;
+}
+
+@font-face {
+  font-family: "YS Text Medium Regular";
+  src: url("https://db.onlinewebfonts.com/t/55b3b22e91fcf995e6a087241e519670.eot");
+  src: url("https://db.onlinewebfonts.com/t/55b3b22e91fcf995e6a087241e519670.eot?#iefix")
+      format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/55b3b22e91fcf995e6a087241e519670.woff2")
+      format("woff2"),
+    url("https://db.onlinewebfonts.com/t/55b3b22e91fcf995e6a087241e519670.woff")
+      format("woff"),
+    url("https://db.onlinewebfonts.com/t/55b3b22e91fcf995e6a087241e519670.ttf")
+      format("truetype"),
+    url("https://db.onlinewebfonts.com/t/55b3b22e91fcf995e6a087241e519670.svg#YS Text Medium Regular")
+      format("svg");
+}
+.center {
+  width: 1280px;
+  margin: 0 auto;
+}
+.board-center {
+  width: 1000px;
+  margin-bottom: 20px;
+}
