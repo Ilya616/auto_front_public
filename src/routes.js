@@ -3,10 +3,6 @@ import Index from "./components/IndexPage/Index";
 import NewsPage from "./components/NewsPage/NewsPage";
 import Contacts from "./components/ContactsPage/Contacts";
 
-export default function Routes() {
-  return;
-}
-
 export let routes = createBrowserRouter([
   {
     path: "/",

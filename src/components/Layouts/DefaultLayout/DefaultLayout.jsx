@@ -1,16 +1,16 @@
 import React from "react";
 import { useState } from "react";
 
-import Header from "../../Header/Header";
-import Navigate from "../../Navigate/Navigate";
-import Location from "../../Location/Location";
-import CarFilterPrewiew from "../../CarFilterPrewiew/CarFilterPrewiew";
-import CarFilter from "../../CarFilter/CarFilter";
-import CarIcons from "../../CarIcons/CarIcons";
-import ListBrend from "../../ListBrend/ListBrend";
-import CarList from "../../ListCar/CarList";
+import Header from "@components/Header/Header";
+import Navigate from "@components/Navigate/Navigate";
+import Location from "@components/Location/Location";
+import CarFilterPrewiew from "@components/CarFilterPrewiew/CarFilterPrewiew";
+import CarFilter from "@components/CarFilter/CarFilter";
+import CarIcons from "@components/CarIcons/CarIcons";
+import ListBrend from "@components/ListBrend/ListBrend";
+import CarList from "@components/ListCar/CarList";
 import { Pagination } from "antd";
-import Footer from "../../Footer/Footer";
+import Footer from "@components/Footer/Footer";
 
 export default function DefaultLayout(props) {
   return (
