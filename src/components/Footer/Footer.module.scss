@@ -1,0 +1,25 @@
+.footerMain {
+  display: flex;
+  justify-content: space-between;
+  height: 10vh;
+  align-items: center;
+  &__wrapper {
+    width: 52%;
+  }
+}
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  &__link {
+    text-decoration: none;
+    color: #ccc;
+  }
+}
+.icons {
+  &__wrap {
+    display: flex;
+  }
+  &__content {
+    display: flex;
+  }
+}

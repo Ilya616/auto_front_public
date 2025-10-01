@@ -1,0 +1,30 @@
+.main {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  &__text {
+    color: #ccc;
+    font-size: 20px;
+  }
+  &__filter {
+    display: flex;
+    justify-content: space-between;
+    width: 22%;
+    align-items: center;
+  }
+  &__link {
+    text-decoration: none;
+    color: #000;
+    font-size: 22px;
+    font-weight: 500;
+  }
+  &__icon {
+    font-size: 20px;
+  }
+}
+.main__filter:hover .main__link {
+  color: red;
+}
+.main__filter:hover .main__icon {
+  color: red;
+}
