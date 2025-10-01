@@ -1,0 +1,21 @@
+.location {
+  display: flex;
+  justify-content: space-between;
+  width: 7%;
+  &__link {
+    text-decoration: none;
+    color: #0c78ed;
+    font-weight: 500;
+    font-size: 15px;
+    font-family: "YS Text Medium Regular";
+  }
+  &__icon {
+    color: #0c78ed;
+  }
+}
+.location:hover .location__link {
+  color: red;
+}
+.location:hover .location__icon {
+  color: red;
+}
