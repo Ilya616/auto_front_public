@@ -1,6 +1,6 @@
 import styles from "./Auth.module.scss";
 import { NavLink, useNavigate } from "react-router";
-import Button from "../../UI/Components/Button/Button";
+import Button from "@uiComponents/Button/Button";
 import SignInForm from "../../UI/Form/SignInForm/SignInForm";
 import SignUpForm from "../../UI/Form/SignUpForm/SignUpForm";
 import { useEffect, useState } from "react";
