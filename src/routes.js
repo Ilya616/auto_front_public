@@ -3,6 +3,7 @@ import Index from "./components/IndexPage/Index";
 import NewsPage from "./components/NewsPage/NewsPage";
 import Contacts from "./components/ContactsPage/Contacts";
 import Auth from "./components/pages/Auth/Auth";
+import Lk from "./components/pages/Lk/Lk";
 
 export let routes = createBrowserRouter([
   {
@@ -20,5 +21,9 @@ export let routes = createBrowserRouter([
   {
     path: "/auth",
     Component: Auth,
+  },
+  {
+    path: "/lk",
+    Component: Lk,
   },
 ]);
