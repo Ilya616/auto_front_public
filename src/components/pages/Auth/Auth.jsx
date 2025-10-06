@@ -1,16 +1,15 @@
 import styles from "./Auth.module.scss";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import Button from "../../UI/Components/Button/Button";
 import SignInForm from "../../UI/Form/SignInForm/SignInForm";
 import SignUpForm from "../../UI/Form/SignUpForm/SignUpForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { request } from "../../Libs/request";
-
 let VITE_BACK_API = import.meta.env.VITE_BACK_API;
 
-
 export default function Auth() {
-
+  let navigate = useNavigate();
+  
   const [authUser, setAuthUser] = useState({email: null, password: null});
   const [registrationUser, setRegistrationUser] = useState(
     {
@@ -21,9 +20,25 @@ export default function Auth() {
     }
   );
 
+  useEffect(()=>{
+    if(sessionStorage.getItem("token")){
+      navigate(`/lk`);
+    }
+  },[]);
+
   function onAuthRequest(evt){
     evt.preventDefault();
-    request({method:"post", url: VITE_BACK_API+"/auth", data: authUser, callback: ()=>{console.log("ответ")}});
+    request({method:"post", url: VITE_BACK_API+"/auth", data: authUser, callback: (response)=>{
+      
+      if(response.data.hasOwnProperty("token")){
+        sessionStorage.setItem("token", response.data.token);
+        navigate(`/lk`);
+      }
+      else{
+        console.log(response.data);
+      }
+
+    }});
   }
 
   function onChangeEmail(evt){

@@ -8,7 +8,7 @@ export function request(obj = {method: "GET", url: "", data: null, callback}){
     })
     .then(
         function(response){
-           obj.callback();
+           obj.callback(response);
         }
     )
     .catch(function (error) {
