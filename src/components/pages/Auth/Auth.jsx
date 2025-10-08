@@ -35,7 +35,7 @@ export default function Auth() {
         navigate(`/lk`);
       }
       else{
-        console.log(response.data);
+        
       }
 
     }});
@@ -57,7 +57,7 @@ export default function Auth() {
 
   function onRegistrationRequest(evt){
     evt.preventDefault();
-    request({method:"post", url: VITE_BACK_API+"/registration", data: registrationUser, callback: ()=>{console.log("ответ")}});
+    request({method:"post", url: VITE_BACK_API+"/registration", data: registrationUser, callback: ()=>{}});
   }
   function onChangeRegLogin(evt){
     registrationUser.login = evt.target.value;

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { request } from '../../Libs/request';
 
 let VITE_BACK_API = import.meta.env.VITE_BACK_API;
@@ -26,7 +26,14 @@ export default function LK() {
 
   return (
     <div>
-        LK
+        
+
+
+
+        <Link to="/lk/create-card">Подать объявление</Link>
+
+        
+
     </div>
   )
 }

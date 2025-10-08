@@ -4,6 +4,7 @@ import NewsPage from "./components/NewsPage/NewsPage";
 import Contacts from "./components/ContactsPage/Contacts";
 import Auth from "./components/pages/Auth/Auth";
 import LK from "./components/pages/LK/LK";
+import CreateCard from "./components/pages/CreateCard/CreateCard";
 
 export let routes = createBrowserRouter([
   {
@@ -25,5 +26,9 @@ export let routes = createBrowserRouter([
   {
     path: "/lk",
     Component: LK,
+  },
+  {
+    path: "/lk/create-card",
+    Component: CreateCard,
   },
 ]);

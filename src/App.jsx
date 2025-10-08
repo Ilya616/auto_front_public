@@ -10,9 +10,6 @@ import { routes } from "./routes";
 function App() {
   
 
-
-  console.log(routes);
-
   return (
     <>
       <RouterProvider router={routes} />
