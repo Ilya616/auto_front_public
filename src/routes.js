@@ -1,9 +1,11 @@
 import { createBrowserRouter } from "react-router";
-import Index from "./components/IndexPage/Index";
+import Index from "../src/components/pages/IndexPage/Index";
 import NewsPage from "./components/NewsPage/NewsPage";
 import Contacts from "./components/ContactsPage/Contacts";
 import Auth from "./components/pages/Auth/Auth";
-import Lk from "./components/pages/Lk/Lk";
+
+import CreateCard from "./components/pages/CreateCard/CreateCard";
+import LK from "./components/pages/Lk/Lk";
 
 export let routes = createBrowserRouter([
   {
@@ -24,6 +26,10 @@ export let routes = createBrowserRouter([
   },
   {
     path: "/lk",
-    Component: Lk,
+    Component: LK,
+  },
+  {
+    path: "/lk/create-card",
+    Component: CreateCard,
   },
 ]);

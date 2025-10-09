@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export function request(
-  obj = { method: "get", url: "", data: null, callback }
+  obj = { method: "GET", url: "", data: null, callback }
 ) {
   axios({
     method: obj.method,

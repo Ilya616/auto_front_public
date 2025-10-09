@@ -4,11 +4,11 @@ import "@/index.scss";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import { RouterProvider } from "react-router";
-
 import { routes } from "./routes";
 
+
 function App() {
-  console.log(routes);
+  
 
   return (
     <>

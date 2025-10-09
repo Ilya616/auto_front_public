@@ -1,41 +1,27 @@
 import styles from "./Auth.module.scss";
-import { NavLink, useNavigate } from "react-router";
-import Button from "@uiComponents/Button/Button";
-import SignInForm from "../../UI/Form/SignInForm/SignInForm";
-import SignUpForm from "../../UI/Form/SignUpForm/SignUpForm";
+import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import { request } from "@components/Libs/request";
-
+import { request } from "../../Libs/request";
 let VITE_BACK_API = import.meta.env.VITE_BACK_API;
 
 export default function Auth() {
-  useEffect(() => {
-    if (sessionStorage.getItem("token")) {
-      navigate("/lk");
-    }
-  }, []);
-  // const [isActive, setIsActive] = useState(false);
+  let navigate = useNavigate();
 
-  // const handleSignUp = () => {
-  //   setIsActive(true);
-  // };
-
-  // const handleSignIn = () => {
-  //   setIsActive(false);
-  // };
-
-  const [authUser, setauthUser] = useState({ email: null, password: null });
-  const [regUser, setregUser] = useState({
+  const [authUser, setAuthUser] = useState({ email: null, password: null });
+  const [registrationUser, setRegistrationUser] = useState({
+    login: null,
     email: null,
     password: null,
-    repass: null,
-    login: null,
+    repassword: null,
   });
-  let navigate = useNavigate();
+  useEffect(() => {
+    if (sessionStorage.getItem("token")) {
+      navigate(`/lk`);
+    }
+  }, []);
 
   function onAuthRequest(evt) {
     evt.preventDefault();
-    console.log(evt);
     request({
       method: "post",
       url: VITE_BACK_API + "/auth",
@@ -43,122 +29,100 @@ export default function Auth() {
       callback: (response) => {
         if (response.data.hasOwnProperty("token")) {
           sessionStorage.setItem("token", response.data.token);
-          navigate("/lk");
+          navigate(`/lk`);
         } else {
-          console.log(response.data);
         }
       },
     });
   }
+
   function onChangeEmail(evt) {
     authUser.email = evt.target.value;
     let copy = Object.assign({}, authUser);
-    setauthUser(copy);
-    // setauthUser({ email: evt.target.value, password: authUser.password });
+    setAuthUser(copy);
   }
-  function onChangePassword(evt) {
+
+  function onChangePass(evt) {
     authUser.password = evt.target.value;
     let copy = Object.assign({}, authUser);
-    setauthUser(copy);
+    setAuthUser(copy);
   }
 
-  function onRegisterhRequest(evt) {
+  function onRegistrationRequest(evt) {
     evt.preventDefault();
-    console.log(regUser);
-
-    console.log(evt);
     request({
       method: "post",
-      url: VITE_BACK_API + "/regitration",
-      data: regUser,
-      callback: () => {
-        console.log("otvet");
-      },
+      url: VITE_BACK_API + "/registration",
+      data: registrationUser,
+      callback: () => {},
     });
   }
-  function onChangeRegEmail(evt) {
-    regUser.email = evt.target.value;
-    let copy = Object.assign({}, regUser);
-    setregUser(copy);
-  }
-  function onChangeRegPassword(evt) {
-    regUser.password = evt.target.value;
-    let copy = Object.assign({}, regUser);
-    setregUser(copy);
-  }
-  function onChangeRegRePassword(evt) {
-    regUser.repass = evt.target.value;
-    let copy = Object.assign({}, regUser);
-    setregUser(copy);
-  }
   function onChangeRegLogin(evt) {
-    regUser.login = evt.target.value;
-    let copy = Object.assign({}, regUser);
-    setregUser(copy);
+    registrationUser.login = evt.target.value;
+    let copy = Object.assign({}, registrationUser);
+    setRegistrationUser(copy);
   }
-
+  function onChangeRegEmail(evt) {
+    registrationUser.email = evt.target.value;
+    let copy = Object.assign({}, registrationUser);
+    setRegistrationUser(copy);
+  }
+  function onChangeRegPass(evt) {
+    registrationUser.password = evt.target.value;
+    let copy = Object.assign({}, registrationUser);
+    setRegistrationUser(copy);
+  }
+  function onChangeRegRePass(evt) {
+    registrationUser.repassword = evt.target.value;
+    let copy = Object.assign({}, registrationUser);
+    setRegistrationUser(copy);
+  }
   return (
     <article className={styles.container}>
       <div>
-        login
-        <form className={styles.reg} onSubmit={onAuthRequest}>
-          <label htmlFor="1">email</label>
+        авторизация
+        <form onSubmit={onAuthRequest}>
           <input
+            type="email"
             onChange={onChangeEmail}
-            type="email"
             name="email"
-            id="1"
             placeholder="email"
           />
-          <label htmlFor="2">password</label>
+          <br />
           <input
-            onChange={onChangePassword}
             type="password"
+            onChange={onChangePass}
             name="password"
-            id="2"
-            placeholder="password"
+            placeholder="пароль"
           />
-          <button>войти</button>
+          <br />
+          <button>Войти</button>
         </form>
       </div>
+
       <div>
-        register
-        <form className={styles.reg} onSubmit={onRegisterhRequest}>
-          <label htmlFor="3">login</label>
+        регистрация
+        <form onSubmit={onRegistrationRequest}>
+          <input type="text" onChange={onChangeRegLogin} placeholder="login" />
+          <br />
+          <input type="email" onChange={onChangeRegEmail} placeholder="email" />
+          <br />
           <input
-            onChange={onChangeRegLogin}
-            type="text"
-            name="login"
-            id="3"
-            placeholder="login"
-          />
-          <label htmlFor="4">email</label>
-          <input
-            onChange={onChangeRegEmail}
-            type="email"
-            name="email"
-            id="4"
-            placeholder="email"
-          />
-          <label htmlFor="5">password</label>
-          <input
-            onChange={onChangeRegPassword}
             type="password"
-            name="password"
-            id="5"
-            placeholder="password"
+            onChange={onChangeRegPass}
+            placeholder="пароль"
           />
-          <label htmlFor="6">re-password</label>
+          <br />
           <input
-            onChange={onChangeRegRePassword}
             type="password"
-            name="re-password"
-            id="6"
-            placeholder="re-password"
+            onChange={onChangeRegRePass}
+            placeholder="re пароль"
           />
-          <button>Зарегистрироваться</button>
+          <br />
+          <button>зарегистрироваться</button>
         </form>
       </div>
+
       {/* <div className={styles.block}>
         <section className={"block-item" + " " + styles.block__item}>
           <h2 className={"block-item__title"}>У вас уже есть аккаунт ?</h2>
