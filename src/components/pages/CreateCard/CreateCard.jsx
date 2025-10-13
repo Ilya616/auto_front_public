@@ -8,9 +8,17 @@ let VITE_BACK_API = import.meta.env.VITE_BACK_API;
 export default function CreateCard() {
   let [auto, setAuto] = useState({ marks: [], color: [] });
 
-  let [button, setButton] = useState(false);
+  // let [marks, setMarks] = useState([]);
+  // let [models, setModels] = useState([]);
+  let [marksAndModels, setMarksAndModels] = useState([]);
 
-  let [announcement, setAnnouncement] = useState({ year: null, marka: null });
+  let [button, setButton] = useState(true);
+
+  let [announcement, setAnnouncement] = useState({
+    year: null,
+    marka: null,
+    model: null,
+  });
 
   let [loading, setLoading] = useState(false);
 
@@ -46,14 +54,42 @@ export default function CreateCard() {
       let copy = Object.assign({}, announcement);
       copy.year = Number(evt.target.value);
       setAnnouncement(copy);
+      if (announcement.marka) {
+        checkFormValid();
+      }
     }
   }
 
   function changeMarka(evt) {
+    let selectedValue = parseInt(evt.target.value);
+
     if (evt.target.value != 0) {
-      let copy = Object.assign({}, announcement);
-      copy.marka = evt.target.value;
+      let selectedMark = marksAndModels.find(
+        (mark) => mark[0] === selectedValue
+      );
+
+      if (selectedMark) {
+        let copy = { ...announcement };
+        copy.marka = selectedMark[1];
+        copy.models = selectedMark[2];
+        setAnnouncement(copy);
+        if (announcement.marka) {
+          checkFormValid();
+        }
+      }
+    }
+  }
+
+  function changeModel(evt) {
+    let selectedValue = evt.target.value;
+
+    if (selectedValue !== 0) {
+      let copy = { ...announcement };
+      copy.model = selectedValue;
       setAnnouncement(copy);
+      if (announcement.marka) {
+        checkFormValid();
+      }
     }
   }
 
@@ -61,7 +97,7 @@ export default function CreateCard() {
     <div>
       {!loading ? (
         <div>
-          <select>
+          <select onChange={changeYear}>
             <option key="0" value="0" disabled selected>
               Выберите год
             </option>
@@ -70,17 +106,31 @@ export default function CreateCard() {
             ))}
           </select>
 
-          <select>
+          <select onChange={changeMarka}>
             <option key="0" value="0" disabled selected>
               Выберите марку
             </option>
-            {auto.marks.map((mark) => (
-              <option key={mark.id}>{mark.name}</option>
+            {marksAndModels.map((mark) => (
+              <option key={mark[0]} value={mark[0]}>
+                {mark[1]}
+              </option>
             ))}
           </select>
-          <ColorMenu colors={auto.color} />
 
-          <Button event={createAnnouncement} disabled={!button}>
+          {announcement.marka && (
+            <select onChange={changeModel}>
+              <option key="0" value="" disabled selected>
+                Выберите модель
+              </option>
+              {announcement.models?.map((model, index) => (
+                <option key={`${announcement.marka}-${index}`} value={model}>
+                  {model}
+                </option>
+              ))}
+            </select>
+          )}
+
+          <Button event={createAnnouncement} disabled={button}>
             Отправить
           </Button>
         </div>
