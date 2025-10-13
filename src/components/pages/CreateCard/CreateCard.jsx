@@ -11,7 +11,7 @@ export default function CreateCard() {
   // let [marks, setMarks] = useState([]);
   // let [models, setModels] = useState([]);
   let [marksAndModels, setMarksAndModels] = useState([]);
-
+  let [marks, setMarks] = useState([]);
   let [button, setButton] = useState(true);
 
   let [announcement, setAnnouncement] = useState({
@@ -22,18 +22,34 @@ export default function CreateCard() {
 
   let [loading, setLoading] = useState(false);
 
+
+
+
   useEffect(() => {
     setLoading(true);
-    console.log(1234);
+
+
     request({
       method: "GET",
       url: VITE_BACK_API + "/get-field-cars",
       callback: (response) => {
         setAuto(response.data);
         setLoading(false);
+
+        setMarksAndModels(response.data);
+
+        mapMarks(response.data);
+        // setMarks()
       },
     });
   }, []);
+
+  function mapMarks(marks){
+    for(let mark in marks){
+
+    }
+    console.log(marks);
+  }
 
   function years() {
     let years = [];
@@ -65,13 +81,13 @@ export default function CreateCard() {
 
     if (evt.target.value != 0) {
       let selectedMark = marksAndModels.find(
-        (mark) => mark[0] === selectedValue
+        (mark) => mark['id'] === selectedValue
       );
 
       if (selectedMark) {
         let copy = { ...announcement };
-        copy.marka = selectedMark[1];
-        copy.models = selectedMark[2];
+        copy.marka = selectedMark['mark'];
+        copy.models = selectedMark['models'];
         setAnnouncement(copy);
         if (announcement.marka) {
           checkFormValid();
@@ -97,8 +113,8 @@ export default function CreateCard() {
     <div>
       {!loading ? (
         <div>
-          <select onChange={changeYear}>
-            <option key="0" value="0" disabled selected>
+          <select onChange={changeYear} defaultValue="0">
+            <option key="0" value="0" disabled >
               Выберите год
             </option>
             {years().map((year) => (
@@ -107,19 +123,19 @@ export default function CreateCard() {
           </select>
 
           <select onChange={changeMarka}>
-            <option key="0" value="0" disabled selected>
+            <option key="0" disabled >
               Выберите марку
             </option>
             {marksAndModels.map((mark) => (
-              <option key={mark[0]} value={mark[0]}>
-                {mark[1]}
+              <option key={mark.id} value={mark.id}>
+                {mark.mark}
               </option>
             ))}
           </select>
 
           {announcement.marka && (
-            <select onChange={changeModel}>
-              <option key="0" value="" disabled selected>
+            <select onChange={changeModel} defaultValue="0">
+              <option key="0" disabled >
                 Выберите модель
               </option>
               {announcement.models?.map((model, index) => (
