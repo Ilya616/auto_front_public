@@ -3,6 +3,10 @@
 // * {
 //
 // }
+.reg {
+  display: flex;
+  flex-direction: column;
+}
 .active {
   background-color: #f43648;
 }
@@ -74,10 +78,8 @@
   color: #333;
 }
 .container {
-  width: 800px;
-  height: 500px;
-  padding: 40px 0;
-  position: relative;
+  width: 1000px;
+  margin: 100px auto;
 }
 .form__title {
   font-size: 1.5rem;

@@ -1,10 +1,11 @@
 import { createBrowserRouter } from "react-router";
-import Index from "./components/IndexPage/Index";
+import Index from "../src/components/pages/IndexPage/Index";
 import NewsPage from "./components/NewsPage/NewsPage";
 import Contacts from "./components/ContactsPage/Contacts";
 import Auth from "./components/pages/Auth/Auth";
-import LK from "./components/pages/LK/LK";
+
 import CreateCard from "./components/pages/CreateCard/CreateCard";
+import LK from "./components/pages/Lk/Lk";
 
 export let routes = createBrowserRouter([
   {
