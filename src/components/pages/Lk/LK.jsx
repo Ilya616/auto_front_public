@@ -34,6 +34,14 @@ export default function LK() {
     }
   }, []);
   function logout() {
+    request({
+      method: "POST",
+      url: VITE_BACK_API + "/logout",
+      data: { token: sessionStorage.getItem("token") },
+      callback: (response) => {
+        console.log(response);
+      },
+    });
     sessionStorage.removeItem("token");
     navigate(`/auth`);
   }

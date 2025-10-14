@@ -28,19 +28,6 @@ export default function Auth() {
   function onAuthRequest(evt) {
     evt.preventDefault();
 
-    request({
-      method: "post",
-      url: VITE_BACK_API + "/auth",
-      data: authUser,
-      callback: (response) => {
-        if (response.data.hasOwnProperty("token")) {
-          sessionStorage.setItem("token", response.data.token);
-          navigate(`/lk`);
-        } else {
-        }
-      },
-    });
-
     let newErrors = validateAuth(authUser);
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
