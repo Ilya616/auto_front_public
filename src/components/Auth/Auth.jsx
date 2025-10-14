@@ -1,11 +1,8 @@
 import styles from "./Auth.module.scss";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import { request } from "../../Libs/request";
-import {
-  validateAuth,
-  validateRegistration,
-} from "../../Validator/formValidator";
+import { request } from "../Libs/request";
+import { validateAuth, validateRegistration } from "../Validator/formValidator";
 let VITE_BACK_API = import.meta.env.VITE_BACK_API;
 
 export default function Auth() {

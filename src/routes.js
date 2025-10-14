@@ -1,11 +1,13 @@
 import { createBrowserRouter } from "react-router";
 import Index from "../src/components/pages/IndexPage/Index";
-import NewsPage from "./components/NewsPage/NewsPage";
-import Contacts from "./components/ContactsPage/Contacts";
-import Auth from "./components/pages/Auth/Auth";
+import NewsPage from "./components/pages/NewsPage/NewsPage";
+import Contacts from "./components/pages/ContactsPage/Contacts";
 
-import CreateCard from "./components/pages/CreateCard/CreateCard";
-import LK from "./components/pages/Lk/Lk";
+import CreateCard from "./components/CreateCard/CreateCard";
+
+import AuthPage from "./components/pages/AuthPage/AuthPage";
+import LkPage from "./components/pages/LkPage/LkPage";
+import CreateCardPage from "./components/pages/CreateCardPage/CreateCardPage";
 
 export let routes = createBrowserRouter([
   {
@@ -22,14 +24,14 @@ export let routes = createBrowserRouter([
   },
   {
     path: "/auth",
-    Component: Auth,
+    Component: AuthPage,
   },
   {
     path: "/lk",
-    Component: LK,
+    Component: LkPage,
   },
   {
     path: "/lk/create-card",
-    Component: CreateCard,
+    Component: CreateCardPage,
   },
 ]);

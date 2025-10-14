@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { request } from "../../Libs/request";
+import { request } from "../Libs/request";
 import { Flex, Spin } from "antd";
-import Button from "../../UI/Components/Button/Button";
+import Button from "../UI/Components/Button/Button";
 
 let VITE_BACK_API = import.meta.env.VITE_BACK_API;
 

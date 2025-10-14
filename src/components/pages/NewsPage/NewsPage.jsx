@@ -1,12 +1,12 @@
 import React from "react";
-import NewsLayout from "../Layouts/DefaultLayout/NewsLayout";
+import DefaultLayout from "../../Layouts/DefaultLayout/DefaultLayout";
 
 export default function NewsPage() {
   return (
     <>
-      <NewsLayout>
+      <DefaultLayout>
         <p>News</p>
-      </NewsLayout>
+      </DefaultLayout>
     </>
   );
 }
