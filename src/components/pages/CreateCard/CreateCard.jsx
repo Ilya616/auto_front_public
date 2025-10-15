@@ -63,8 +63,9 @@ export default function CreateCard() {
     year: null,
     marka: null,
     model: null,
-    description: "",
-    price: ""
+    description: "<p>text123123</p>",
+    price: null,
+    photo: null
   });
   let [button, setButton] = useState(true);
   let [announcement, setAnnouncement] = useState({
@@ -85,7 +86,11 @@ export default function CreateCard() {
 
   const handleEditorChange = (event, editor) => {
     const data = editor.getData();
-    setEditorData(data);
+
+    let copy = Object.assign({}, card);
+    copy.description = data;
+    setCard(copy);
+
   };
 
   const handleEditorBlur = (event, editor) => {
@@ -185,7 +190,7 @@ export default function CreateCard() {
             }
           ]
         },
-        initialData: editorData,
+        initialData: card.description,
         language: 'ru',
         licenseKey: LICENSE_KEY,
         list: {
@@ -301,7 +306,29 @@ export default function CreateCard() {
   }
 
   function handleNextStep() {
-    
+
+    let formData = {};// = new FormData();
+
+    for(let key in card){
+      formData[key] = card[key];
+    }
+
+    formData.token = sessionStorage.getItem('token');
+
+    request({
+      method: 'POST', 
+      url: VITE_BACK_API + "/card/create",
+      data: formData, 
+      callback: (response)=>{
+        console.log(response);
+      } 
+    });
+  }
+
+  function onLoadFile(evt){
+    let copyCard = Object.assign({}, card);
+    copyCard.photo = evt.target.value;
+    setCard(copyCard);
   }
 
 
@@ -310,7 +337,7 @@ export default function CreateCard() {
       const data = editorInstance.getData();
       return data;
     }
-    return editorData;
+    return card.description;
   };
 
   return (
@@ -361,6 +388,9 @@ export default function CreateCard() {
           {step == 1 && (
             <div>
               <input type="text" placeholder="Стоимость"/>
+
+
+              <input type="file" onChange={onLoadFile}/>
 
               <div>
                 <div className="main-container">
