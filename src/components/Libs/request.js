@@ -1,12 +1,14 @@
 import axios from "axios";
 
 export function request(
-  obj = { method: "GET", url: "", data: null, callback }
+  obj = { method: "GET", url: "", body: null, data: null, callback }
 ) {
   axios({
     method: obj.method,
     url: obj.url,
     data: obj.data,
+    body: obj.body,
+    headers: { "Content-Type": "multipart/form-data" },
   })
     .then(function (response) {
       obj.callback(response);
