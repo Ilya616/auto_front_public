@@ -1,7 +1,14 @@
 import axios from "axios";
 
 export function request(
-  obj = { method: "GET", url: "", body: null, data: null, callback }
+  obj = {
+    method: "GET",
+    url: "",
+    body: null,
+    data: null,
+    callback,
+    error,
+  }
 ) {
   axios({
     method: obj.method,
@@ -14,6 +21,6 @@ export function request(
       obj.callback(response);
     })
     .catch(function (error) {
-      console.log(error);
+      obj.error(error);
     });
 }

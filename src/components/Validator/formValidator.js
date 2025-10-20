@@ -36,10 +36,10 @@ export function validateRegistration(registrationUser) {
 
   switch (true) {
     case !registrationUser.repassword:
-      newErrors.repassword = "repassword не заполнен";
+      newErrors.repassword = "Не заполнен пароль";
       break;
     case registrationUser.repassword !== registrationUser.password:
-      newErrors.repassword = "repassword не совпадает с паролем";
+      newErrors.repassword = "Пароли не совпадают";
       break;
   }
 
@@ -49,7 +49,7 @@ export function validateRegistration(registrationUser) {
 export function validateAuth(authUser) {
   let newErrors = {};
 
-  switch(true) {
+  switch (true) {
     case !authUser.email:
       newErrors.LogEmail = "email не заполнен";
       break;
@@ -61,7 +61,7 @@ export function validateAuth(authUser) {
       break;
   }
 
-  switch(true) {
+  switch (true) {
     case !authUser.password:
       newErrors.logPassword = "password не заполнен";
       break;

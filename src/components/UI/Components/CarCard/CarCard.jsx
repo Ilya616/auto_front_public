@@ -48,7 +48,7 @@ export default function CarCard(props) {
             <span className={styles.content__price}>{props.price}</span>
           </div>
         </div>
-        <div>
+        <div className={styles.spec}>
           {props.description.map((element, index) => (
             <span key={index}>{element}</span>
           ))}

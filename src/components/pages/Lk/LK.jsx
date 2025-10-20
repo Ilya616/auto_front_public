@@ -35,7 +35,7 @@ export default function LK() {
   }, []);
   function logout() {
     sessionStorage.removeItem("token");
-    navigate(`/auth`);
+    navigate(`/auth-new`);
   }
 
   return (

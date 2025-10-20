@@ -1,0 +1,45 @@
+.environment {
+  background-image: url("../../../public/auth/1.webp");
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+.wrapper {
+  width: 560px;
+  margin: 0 auto;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &__border {
+    width: 70%;
+    flex-direction: column;
+    background-color: aliceblue;
+    height: 50vh;
+    border-radius: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-around;
+  }
+  &__prewiev {
+    margin: 0;
+  }
+  &__form {
+    display: flex;
+    flex-direction: column;
+    height: 35vh;
+    justify-content: space-between;
+    align-items: center;
+    width: 60%;
+  }
+  &__logo {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 60%;
+  }
+  &__img {
+    width: 100%;
+  }
+}

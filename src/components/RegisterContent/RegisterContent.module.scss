@@ -1,0 +1,12 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  height: 35vh;
+  justify-content: space-around;
+  align-items: center;
+}
+.errorText {
+  color: red;
+  font-size: 12px;
+  margin: 0;
+}
