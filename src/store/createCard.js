@@ -2,20 +2,21 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   value: {
-    mark: null,
-    model: null,
+    mark: {name: null, id: null},
+    model: {name: null, id: null},
     year: null,
-    bodywork: null,
-    engine: null,
-    drive: null,
-    transmission: null,
+    bodywork: {name: null, id: null},
+    engine: {name: null, id: null},
+    drive: {name: null, id: null},
+    transmission: {name: null, id: null},
     mileage: null,
     phfoto: null,
     price: null,
-    color: null,
+    color: {name: null, id: null},
     description: "<p>text</p>",
   },
 };
+
 
 export const createCard = createSlice({
   name: "createCard",
@@ -29,7 +30,6 @@ export const createCard = createSlice({
     },
     changeDataMark: (state, change) => {
       console.log(change.payload);
-
       state.value.mark = change.payload;
     },
     changeDataModel: (state, change) => {

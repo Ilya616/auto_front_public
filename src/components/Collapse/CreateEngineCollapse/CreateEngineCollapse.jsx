@@ -27,7 +27,7 @@ export default function CreateEngineCollapse(props) {
       label: (
         <div className={styles.label}>
           <label>{props.head}</label>
-          <label>{engineChecked}</label>
+          <label>{engineChecked.name}</label>
         </div>
       ),
       children: <div className={styles.wrapper}>{text}</div>,

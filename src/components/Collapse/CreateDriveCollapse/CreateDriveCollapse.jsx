@@ -27,7 +27,7 @@ export default function CreateDriveCollapse(props) {
       label: (
         <div className={styles.label}>
           <label>{props.head}</label>
-          <label>{driveChecked}</label>
+          <label>{driveChecked.name}</label>
         </div>
       ),
       children: <div className={styles.wrapper}>{text}</div>,

@@ -29,7 +29,7 @@ export default function CreateTransmissionCollapse(props) {
       label: (
         <div className={styles.label}>
           <label>{props.head}</label>
-          <label>{transmissionChecked}</label>
+          <label>{transmissionChecked.name}</label>
         </div>
       ),
       children: <div className={styles.wrapper}>{text}</div>,

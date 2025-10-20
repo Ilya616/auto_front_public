@@ -19,6 +19,9 @@ import CreateDriveCollapse from "../Collapse/CreateDriveCollapse/CreateDriveColl
 import CreateEngineCollapse from "../Collapse/CreateEngineCollapse/CreateEngineCollapse";
 import CreateTransmissionCollapse from "../Collapse/CreateTransmissionCollapse/CreateTransmissionCollapse";
 import Button from "../UI/Components/Button/Button";
+import { request } from "../Libs/request";
+
+let VITE_BACK_API = import.meta.env.VITE_BACK_API;
 
 export default function CreateCardModel(props) {
   const count = useSelector((state) => state.createCard.value);
@@ -27,13 +30,17 @@ export default function CreateCardModel(props) {
   const [input, setInput] = useState("");
   const [btn, setBtn] = useState(false);
   function setModel(model) {
-    dispatch(changeDataModel(model));
-
+    dispatch(changeDataModel({name: model, id: 1}));
     setInput(model);
     setBtn(true);
-    props.nextStep();
+  
+    // props.nextStep();
   }
   let cars = props.model != undefined ? props.model : "";
+
+  console.log(cars[props.id].models);
+
+
   function years() {
     let years = [];
     let date = new Date();
@@ -43,7 +50,11 @@ export default function CreateCardModel(props) {
     return years;
   }
   function loadAdvertisement() {
-    console.log(count);
+
+    let data = Object.assign({}, count);
+    data.token = sessionStorage.getItem("token");
+
+    request({method: 'POST', url: VITE_BACK_API + "/card/create", data: data, callback: (response)=>{console.log(response)}});
   }
   return (
     <>
@@ -67,12 +78,12 @@ export default function CreateCardModel(props) {
                   setModel(model);
                 }}
               >
-                {model}
+                { model }
               </span>
             ))}
         </div>
       )}
-      {props.step == 2 && (
+      {props.step == 2 && cars != undefined (
         <>
           <div className={styles.main}>
             <h2>Характеристики:</h2>

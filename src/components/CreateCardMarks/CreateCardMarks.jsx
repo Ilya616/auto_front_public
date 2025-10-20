@@ -35,7 +35,7 @@ export default function CreateCardMarks(props) {
   ];
   function setMarka(marka, id) {
     setMark({ value: marka, mark_id: id });
-    dispatch(changeDataMark(marka));
+    dispatch(changeDataMark({name:marka, id:id}));
     setBtn(true);
     setStep(1);
   }
@@ -75,6 +75,7 @@ export default function CreateCardMarks(props) {
             ))}
         </div>
       )}
+
       {/* {props.marks != undefined && console.log(props.marks)} */}
       {step >= 1 && (
         <div className={styles.list}>
@@ -86,6 +87,8 @@ export default function CreateCardMarks(props) {
           />
         </div>
       )}
+
+      
       {/* {step >= 1 && console.log(count)} */}
     </div>
   );

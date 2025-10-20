@@ -29,7 +29,7 @@ export default function CreateCategoryCollapse(props) {
       label: (
         <div className={styles.label}>
           <label>{props.head}</label>
-          <label>{bodyworkChecked}</label>
+          <label>{bodyworkChecked.name}</label>
         </div>
       ),
       children: <div className={styles.wrapper}>{text}</div>,
