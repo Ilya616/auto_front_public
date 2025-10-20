@@ -1,8 +1,8 @@
 import React from "react";
-import DefaultLayout from "../Layouts/DefaultLayout/DefaultLayout";
-import CarCard from "../UI/Components/CarCard/CarCard";
+import DefaultLayout from "@layouts/DefaultLayout/DefaultLayout";
+import CarCard from "@uiComponents/CarCard/CarCard";
 
-import { CARS } from "../Libs/Cars";
+import { CARS } from "../../Libs/Cars";
 
 export default function Index() {
   return (

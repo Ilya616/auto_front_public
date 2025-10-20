@@ -7,10 +7,18 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format": "prettier --write ."
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-react": "^11.0.0",
+    "@lexical/react": "^0.37.0",
+    "ckeditor5": "^47.0.0",
+    "ckeditor5-premium-features": "^47.0.0",
+    "lexical": "^0.37.0",
+    "quill": "^2.0.3",
     "react": "^19.1.1",
+    "react-contenteditable": "^3.3.7",
     "react-dom": "^19.1.1",
     "react-router": "^7.9.3"
   },
@@ -20,13 +28,15 @@
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.3",
+    "antd": "^5.27.4",
+    "axios": "^1.12.2",
     "eslint": "^9.36.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.4.0",
     "normalize.css": "^8.0.1",
+    "prettier": "^3.6.2",
     "sass": "^1.93.2",
-    "vite": "^7.1.7",
-    "antd": "^5.27.4"
+    "vite": "^7.1.7"
   }
 }
