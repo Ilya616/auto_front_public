@@ -1,0 +1,16 @@
+.table {
+  width: 100%;
+  border-radius: 10px;
+  background-color: antiquewhite;
+
+  &__category {
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0 0 10px;
+  }
+}
+.category__wrapp {
+  width: 25%;
+  font-size: 15px;
+}

@@ -1,0 +1,28 @@
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  border-radius: 50px;
+  height: 10vh;
+  box-sizing: border-box;
+  font-size: 15px;
+  transition: 0.5s linear;
+}
+.main:hover {
+  background-color: rgb(140, 140, 241);
+  border: 1px solid rgb(61, 61, 255);
+}
+.active {
+  background-color: rgb(140, 140, 241);
+  border: 1px solid rgb(61, 61, 255);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  border-radius: 50px;
+  height: 10vh;
+  box-sizing: border-box;
+  font-size: 15px;
+  transition: 0.5s linear;
+}

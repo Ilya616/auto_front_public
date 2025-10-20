@@ -1,0 +1,15 @@
+.input {
+  height: 45px;
+}
+.main {
+  margin-top: 15px;
+  width: 100%;
+}
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+.label {
+  display: flex;
+  justify-content: space-between;
+}

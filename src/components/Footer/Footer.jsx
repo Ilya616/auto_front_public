@@ -27,7 +27,9 @@ export default function Footer(props) {
           <i className="fa-brands fa-react"></i>
         </div>
         <div className={styles.icons__content}>
-          <span>Проект компании: {props.authorOfProgect} и одной гордой птицы</span>
+          <span>
+            Проект компании: {props.authorOfProgect} и одной гордой птицы
+          </span>
         </div>
       </div>
     </div>

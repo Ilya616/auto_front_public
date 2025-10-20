@@ -1,12 +1,12 @@
 import React from "react";
-import NewsLayout from "../Layouts/DefaultLayout/NewsLayout";
+import DefaultLayout from "../../Layouts/DefaultLayout/DefaultLayout";
 
 export default function Contacts() {
   return (
     <>
-      <NewsLayout>
+      <DefaultLayout>
         <p>Contacts</p>
-      </NewsLayout>
+      </DefaultLayout>
     </>
   );
 }

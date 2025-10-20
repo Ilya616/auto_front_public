@@ -1,5 +1,5 @@
 import React from "react";
-import DefaultLayout from "@layouts/DefaultLayout/DefaultLayout";
+import IndexLayout from "../../Layouts/IndexLayout/IndexLayout";
 import CarCard from "@uiComponents/CarCard/CarCard";
 
 import { CARS } from "../../Libs/Cars";
@@ -7,7 +7,7 @@ import { CARS } from "../../Libs/Cars";
 export default function Index() {
   return (
     <>
-      <DefaultLayout cars={CARS}>
+      <IndexLayout cars={CARS}>
         {CARS.map((element) => (
           <CarCard
             key={element.id}
@@ -24,7 +24,7 @@ export default function Index() {
             location={element.location}
           />
         ))}
-      </DefaultLayout>
+      </IndexLayout>
     </>
   );
 }

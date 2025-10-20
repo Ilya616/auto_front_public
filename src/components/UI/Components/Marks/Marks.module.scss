@@ -1,0 +1,26 @@
+.mark {
+  width: 20%;
+  background-color: #ccc;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  align-items: center;
+  height: 10vh;
+  justify-content: center;
+  margin-right: 15px;
+  margin-bottom: 6px;
+  transition: 0.5s linear;
+  &__text {
+    margin: 0;
+    text-align: center;
+    width: 50%;
+    font-size: 15px;
+  }
+  &__img {
+    width: 35%;
+  }
+}
+.mark:hover {
+  background-color: aqua;
+  cursor: pointer;
+}

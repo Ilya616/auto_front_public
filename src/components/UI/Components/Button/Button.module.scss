@@ -1,0 +1,12 @@
+.btn {
+  width: 100%;
+  background-color: black;
+  height: 5vh;
+  border-radius: 10px;
+  color: aliceblue;
+  cursor: pointer;
+}
+.btn:hover {
+  background-color: rgb(37, 37, 37);
+  transition: 0.5s linear;
+}
