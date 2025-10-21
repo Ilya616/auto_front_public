@@ -17,7 +17,7 @@ export default function CreateCategoryCollapse(props) {
     <WrappCard
       key={index}
       card={card.bodywork}
-      index={index}
+      id={card.id}
       changeData={changeData}
       choise={choise}
     />
@@ -29,7 +29,7 @@ export default function CreateCategoryCollapse(props) {
       label: (
         <div className={styles.label}>
           <label>{props.head}</label>
-          <label>{bodyworkChecked}</label>
+          <label>{bodyworkChecked.bodywork}</label>
         </div>
       ),
       children: <div className={styles.wrapper}>{text}</div>,
@@ -41,7 +41,7 @@ export default function CreateCategoryCollapse(props) {
     // console.log(key);
   };
   function changeData(data, id) {
-    dispatch(changeDataBodyWork(data));
+    dispatch(changeDataBodyWork({ bodywork: data, id: id }));
     setChoise({ active_id: id });
   }
   return (

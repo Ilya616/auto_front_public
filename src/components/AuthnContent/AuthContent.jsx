@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
 import {
   EyeInvisibleOutlined,
@@ -13,7 +13,34 @@ let VITE_BACK_API = import.meta.env.VITE_BACK_API;
 import styles from "./AuthContent.module.scss";
 import { validateAuth } from "../Validator/formValidator";
 
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/userMake";
+
 export default function AuthContent() {
+  useEffect(() => {
+    setLoader(true);
+    if (!sessionStorage.getItem("token")) {
+      setLoader(false);
+    } else {
+      request({
+        method: "POST",
+        url: VITE_BACK_API + "/check-user",
+        data: { token: sessionStorage.getItem("token") },
+        callback: (response) => {
+          if (!response.data) {
+            sessionStorage.removeItem("token");
+            setLoader(false);
+          } else {
+            navigate(`/lk`);
+          }
+        },
+        error: (error) => {
+          setLoader(false);
+        },
+      });
+    }
+  }, []);
+  let dispatch = useDispatch();
   let navigate = useNavigate();
 
   const [authUser, setAuthUser] = useState({ email: null, password: null });
@@ -44,7 +71,8 @@ export default function AuthContent() {
       callback: (response) => {
         if (response.data.hasOwnProperty("token")) {
           sessionStorage.setItem("token", response.data.token);
-          console.log(response.data);
+          // console.log(response.data);
+          dispatch(setUser(response.data));
           setLoader(false);
           navigate(`/lk`);
         }

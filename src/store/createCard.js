@@ -2,18 +2,19 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   value: {
-    mark: null,
-    model: null,
+    mark: { mark: null, id: null },
+    model: { model: null, id: null },
     year: null,
-    bodywork: null,
-    engine: null,
-    drive: null,
-    transmission: null,
+    bodywork: { bodywork: null, id: null },
+    engine: { engine: null, id: null },
+    drive: { drive: null, id: null },
+    transmission: { transmission: null, id: null },
     mileage: null,
     phfoto: null,
     price: null,
-    color: null,
+    color: { color: null, id: null },
     description: "<p>text</p>",
+    category: null,
   },
 };
 
@@ -58,6 +59,9 @@ export const createCard = createSlice({
     },
     changeDataTransmission: (state, change) => {
       state.value.transmission = change.payload;
+    },
+    changeDataCategory: (state, change) => {
+      state.value.category = change.payload;
     },
   },
 });

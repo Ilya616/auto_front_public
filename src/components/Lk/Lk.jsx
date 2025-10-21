@@ -8,9 +8,13 @@ import AdvertisementTable from "../AdvertisementTable/AdvertisementTable";
 import { Link, useNavigate } from "react-router";
 import { request } from "../Libs/request";
 
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/userMake";
+
 let VITE_BACK_API = import.meta.env.VITE_BACK_API;
 
 export default function Lk() {
+  let dispatch = useDispatch();
   const contentStyle = {
     padding: 50,
     background: "rgba(0, 0, 0, 0.05)",
@@ -31,6 +35,7 @@ export default function Lk() {
           if (!response.data) {
             logout();
           } else {
+            dispatch(setUser(response.data));
             setLoader(false);
           }
         },
@@ -38,6 +43,7 @@ export default function Lk() {
     }
   }, []);
   function logout() {
+    dispatch(setUser(null));
     sessionStorage.removeItem("token");
     navigate(`/auth-new`);
   }
@@ -70,9 +76,7 @@ export default function Lk() {
             </div>
             <div className={styles.feature}>
               <div className={styles.feature__icons}>
-                <Link to="/auth-new">
-                  <RollbackOutlined />
-                </Link>
+                <RollbackOutlined onClick={logout} />
               </div>
               <div className={styles.feature__icons}>
                 <SettingOutlined />

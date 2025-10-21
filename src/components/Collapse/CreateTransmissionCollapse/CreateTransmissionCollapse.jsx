@@ -17,7 +17,7 @@ export default function CreateTransmissionCollapse(props) {
     <WrappCard
       key={index}
       card={card.transmission}
-      index={index}
+      id={card.id}
       changeData={changeData}
       choise={choise}
     />
@@ -29,7 +29,7 @@ export default function CreateTransmissionCollapse(props) {
       label: (
         <div className={styles.label}>
           <label>{props.head}</label>
-          <label>{transmissionChecked}</label>
+          <label>{transmissionChecked.transmission}</label>
         </div>
       ),
       children: <div className={styles.wrapper}>{text}</div>,
@@ -41,7 +41,7 @@ export default function CreateTransmissionCollapse(props) {
     // console.log(key);
   };
   function changeData(data, id) {
-    dispatch(changeDataTransmission(data));
+    dispatch(changeDataTransmission({ transmission: data, id: id }));
     setChoise({ active_id: id });
   }
   return (
