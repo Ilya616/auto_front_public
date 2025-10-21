@@ -30,7 +30,6 @@ export const createCard = createSlice({
     },
     changeDataMark: (state, change) => {
       console.log(change.payload);
-
       state.value.mark = change.payload;
     },
     changeDataModel: (state, change) => {
