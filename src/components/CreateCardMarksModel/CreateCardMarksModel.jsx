@@ -34,17 +34,20 @@ export default function CreateCardMarksModel(props) {
   }
 
   return (
+    // если не актуальный шаг переделать на display none
     <div className={styles.main}>
       {console.log(props.marks)}
       <h1>Продайте свой автомобиль</h1>
       <p>Объявление смогут увидеть 3 000 000 человек ежедневно</p>
-      {step == 0 ? (
-        <div className={styles.category}>
-          <TabsAdvertisement />
-        </div>
-      ) : (
-        <div className={styles.category}>{data.mark.mark}</div>
-      )}
+
+      <div className={step == 0 ? styles.category : "displayN"}>
+        <TabsAdvertisement />
+      </div>
+
+      <div className={step != 0 ? styles.category : "displayN"}>
+        {data.mark.mark}
+      </div>
+
       <Input
         disabled={btn.btnMark}
         value={data.mark.mark}
@@ -57,53 +60,51 @@ export default function CreateCardMarksModel(props) {
         }}
       />
 
-      {step == 0 && (
+      <div className={step == 0 ? styles.list : "displayN"}>
+        {props.marks != undefined &&
+          props.marks.map((marka) => (
+            <Marks
+              key={marka.id}
+              marka={marka.mark}
+              setMarka={setMarka}
+              id={marka.id}
+            />
+          ))}
+      </div>
+
+      <Input
+        disabled={btn.btnModel}
+        value={data.model.model}
+        className={step != 0 ? styles.input : "displayN"}
+        placeholder="Модель"
+        onChange={(evt) => {
+          dispatch(
+            changeDataModel({ model: evt.target.value, id: data.model.id })
+          );
+        }}
+      />
+
+      {step == 1 ? (
         <div className={styles.list}>
-          {props.marks != undefined &&
-            props.marks.map((marka) => (
-              <Marks
-                key={marka.id}
-                marka={marka.mark}
-                setMarka={setMarka}
-                id={marka.id}
-              />
-            ))}
+          <div className={step == 1 ? styles.models : "displyN"}>
+            {props.marks != undefined &&
+              props.marks[data.mark.id - 1].models.map((model) => (
+                <span
+                  key={model.id}
+                  className={styles.link}
+                  onClick={() => {
+                    setModel(model.model, model.id);
+                  }}
+                >
+                  {model.model}
+                </span>
+              ))}
+          </div>
         </div>
+      ) : (
+        ""
       )}
-      {step > 0 && (
-        <Input
-          disabled={btn.btnModel}
-          value={data.model.model}
-          className={styles.input}
-          placeholder="Модель"
-          onChange={(evt) => {
-            dispatch(
-              changeDataModel({ model: evt.target.value, id: data.model.id })
-            );
-          }}
-        />
-      )}
-      {step == 1 && (
-        <div className={styles.list}>
-          <>
-            <div className={styles.models}>
-              {props.marks != undefined &&
-                props.marks[data.mark.id - 1].models.map((model) => (
-                  <span
-                    key={model.id}
-                    className={styles.link}
-                    onClick={() => {
-                      setModel(model.model, model.id);
-                    }}
-                  >
-                    {model.model}
-                  </span>
-                ))}
-            </div>
-          </>
-        </div>
-      )}
-      {step == 2 && <CreateCardSpecifications />}
+      {step == 2 ? <CreateCardSpecifications step={step} /> : ""}
     </div>
   );
 }

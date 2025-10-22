@@ -13,7 +13,6 @@ import {
   changeDataDescription,
 } from "../../store/createCard";
 
-import CreateCard from "../CreateCard/CreateCard";
 import CreateCategoryCollapse from "../Collapse/CreateCategoryCollapse/CreateCategoryCollapse";
 import CreateDriveCollapse from "../Collapse/CreateDriveCollapse/CreateDriveCollapse";
 import CreateEngineCollapse from "../Collapse/CreateEngineCollapse/CreateEngineCollapse";
@@ -46,7 +45,7 @@ export default function CreateCardSpecifications(props) {
       url: VITE_BACK_API + "/get-specifications",
       data: { token: sessionStorage.getItem("token") },
       callback: (response) => {
-        // console.log(response.data);
+        console.log(response.data);
         setSpecifications(response.data);
         setLoader(false);
       },
@@ -85,7 +84,7 @@ export default function CreateCardSpecifications(props) {
         </div>
       ) : (
         <>
-          <div className={styles.main}>
+          <div className={props.step == 2 ? styles.main : "displayN"}>
             <h2>Характеристики:</h2>
             <CreateCardCollapse head={"Год выпуска"} />
             {specifications.bodywork != undefined && (
@@ -116,7 +115,7 @@ export default function CreateCardSpecifications(props) {
               <CreateColorCollapse head={"Цвет"} data={specifications.color} />
             )}
           </div>
-          <div className={styles.main}>
+          <div className={props.step == 2 ? styles.main : "displayN"}>
             <h2>Пробег:</h2>
             <Input
               value={data.mileage}
@@ -127,7 +126,7 @@ export default function CreateCardSpecifications(props) {
               }}
             />
           </div>
-          <div className={styles.main}>
+          <div className={props.step == 2 ? styles.main : "displayN"}>
             <h2>Фото:</h2>
             <p className={styles.text}>
               Госномер должен быть хорошо виден — он поможет проверить
@@ -145,7 +144,7 @@ export default function CreateCardSpecifications(props) {
               <Load />
             </div>
           </div>
-          <div className={styles.main}>
+          <div className={props.step == 2 ? styles.main : "displayN"}>
             <h2>Описание:</h2>
             <p className={styles.text}>
               Убедитесь, что описание соответствует Правилам. Не указывайте
@@ -162,7 +161,7 @@ export default function CreateCardSpecifications(props) {
               />
             </div>
           </div>
-          <div className={styles.main}>
+          <div className={props.step == 2 ? styles.main : "displayN"}>
             <h2>Стоимость:</h2>
             <Input
               value={data.price}
@@ -172,8 +171,8 @@ export default function CreateCardSpecifications(props) {
                 dispatch(changeDataPrice(evt.target.value));
               }}
             />
+            <Button event={loadAdvertisement}>Разместить объявление</Button>
           </div>
-          <Button event={loadAdvertisement}>Разместить объявление</Button>
         </>
       )}
     </>
