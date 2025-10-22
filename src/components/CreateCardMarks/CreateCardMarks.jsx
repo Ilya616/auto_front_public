@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { changeDataMark } from "../../store/createCard";
 
 export default function CreateCardMarks(props) {
-  const count = useSelector((state) => state.createCard.value);
+  const carCaracteristics = useSelector((state) => state.createCard.value);
 
   const dispatch = useDispatch();
 
@@ -89,7 +89,7 @@ export default function CreateCardMarks(props) {
       )}
 
       
-      {/* {step >= 1 && console.log(count)} */}
+      {/* {step >= 1 && console.log(carCaracteristics)} */}
     </div>
   );
 }

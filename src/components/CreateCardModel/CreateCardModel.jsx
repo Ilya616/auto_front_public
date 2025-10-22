@@ -24,7 +24,7 @@ import { request } from "../Libs/request";
 let VITE_BACK_API = import.meta.env.VITE_BACK_API;
 
 export default function CreateCardModel(props) {
-  const count = useSelector((state) => state.createCard.value);
+  const carCaracteristics = useSelector((state) => state.createCard.value);
 
   const dispatch = useDispatch();
   const [input, setInput] = useState("");
@@ -40,7 +40,6 @@ export default function CreateCardModel(props) {
 
   console.log(cars[props.id].models);
 
-
   function years() {
     let years = [];
     let date = new Date();
@@ -51,9 +50,8 @@ export default function CreateCardModel(props) {
   }
   function loadAdvertisement() {
 
-    let data = Object.assign({}, count);
+    let data = Object.assign({}, carCaracteristics);
     data.token = sessionStorage.getItem("token");
-
     request({method: 'POST', url: VITE_BACK_API + "/card/create", data: data, callback: (response)=>{console.log(response)}});
   }
   return (
