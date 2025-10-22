@@ -8,6 +8,7 @@ export function request(
     data: null,
     callback,
     error,
+    headers: { "Content-Type": "multipart/form-data" }
   }
 ) {
   axios({
@@ -15,7 +16,7 @@ export function request(
     url: obj.url,
     data: obj.data,
     body: obj.body,
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: obj.headers,
   })
     .then(function (response) {
       obj.callback(response);

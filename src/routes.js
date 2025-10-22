@@ -9,6 +9,7 @@ import LkNew from "./components/pages/LkNew/LkNew";
 import AuthNew from "./components/pages/AuthNew/AuthNew";
 import RegisterNews from "./components/pages/RegisterNews/RegisterNews";
 import CreateCardPage from "./components/pages/CreateCardPage/CreateCardPage";
+import LkTest from "./components/pages/LkTest";
 
 export let routes = createBrowserRouter([
   {
@@ -31,6 +32,7 @@ export let routes = createBrowserRouter([
     path: "/lk",
     Component: LkNew,
   },
+
   {
     path: "/lk/create-card",
     Component: CreateCardPage,
@@ -42,5 +44,9 @@ export let routes = createBrowserRouter([
   {
     path: "/register-new",
     Component: RegisterNews,
+  },
+  {
+    path: "/lk-test",
+    Component: LkTest,
   },
 ]);
