@@ -64,8 +64,8 @@ export default function CreateCardSpecifications(props) {
         setLoader(false);
       },
       error: (error) => {
-        sessionStorage.removeItem("token");
-        navigate(`/auth-new`);
+        // sessionStorage.removeItem("token");
+        // navigate(`/auth-new`);
         // console.log(error);
       },
     });
@@ -81,7 +81,7 @@ export default function CreateCardSpecifications(props) {
       method: "POST",
       url: VITE_BACK_API + "/card/create",
       data: data,
-      headers: [`Authorization: Bearer ${token}`],
+      headers: `Authorization: Bearer ${token}`,
       callback: (response) => {
         setLoader(false);
         navigate(`/lk`);
