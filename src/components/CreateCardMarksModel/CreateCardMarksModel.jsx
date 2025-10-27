@@ -34,9 +34,7 @@ export default function CreateCardMarksModel(props) {
   }
 
   return (
-    // если не актуальный шаг переделать на display none
     <div className={styles.main}>
-      {console.log(props.marks)}
       <h1>Продайте свой автомобиль</h1>
       <p>Объявление смогут увидеть 3 000 000 человек ежедневно</p>
 
@@ -59,18 +57,21 @@ export default function CreateCardMarksModel(props) {
           );
         }}
       />
-
-      <div className={step == 0 ? styles.list : "displayN"}>
-        {props.marks != undefined &&
-          props.marks.map((marka) => (
-            <Marks
-              key={marka.id}
-              marka={marka.mark}
-              setMarka={setMarka}
-              id={marka.id}
-            />
-          ))}
-      </div>
+      {step == 0 ? (
+        <div className={step == 0 ? styles.list : "displayN"}>
+          {props.marks != undefined &&
+            props.marks.map((marka) => (
+              <Marks
+                key={marka.id}
+                marka={marka.mark}
+                setMarka={setMarka}
+                id={marka.id}
+              />
+            ))}
+        </div>
+      ) : (
+        ""
+      )}
 
       <Input
         disabled={btn.btnModel}
@@ -87,24 +88,27 @@ export default function CreateCardMarksModel(props) {
       {step == 1 ? (
         <div className={styles.list}>
           <div className={step == 1 ? styles.models : "displyN"}>
-            {props.marks != undefined &&
-              props.marks[data.mark.id - 1].models.map((model) => (
-                <span
-                  key={model.id}
-                  className={styles.link}
-                  onClick={() => {
-                    setModel(model.model, model.id);
-                  }}
-                >
-                  {model.model}
-                </span>
-              ))}
+            {props.marks[data.mark.id - 1].models.map((model) => (
+              <span
+                key={model.id}
+                className={styles.link}
+                onClick={() => {
+                  setModel(model.model, model.id);
+                }}
+              >
+                {model.model}
+              </span>
+            ))}
           </div>
         </div>
       ) : (
         ""
       )}
-      {step == 2 ? <CreateCardSpecifications step={step} /> : ""}
+      {step == 2 ? (
+        <CreateCardSpecifications step={step} form={props.form} />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

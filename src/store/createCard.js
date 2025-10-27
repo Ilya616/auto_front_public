@@ -10,11 +10,15 @@ const initialState = {
     drive: { drive: null, id: null },
     transmission: { transmission: null, id: null },
     mileage: null,
-    phfoto: null,
+    photo: null,
     price: null,
     color: { color: null, id: null },
     description: "<p>text</p>",
-    category: null,
+    category: 1,
+    modification: { mode: "155 л.с. (2.0 MT)", id: 1 },
+    user: { name: null, id: null },
+    location: "Нижний Новгород",
+    availability: null,
   },
 };
 
@@ -51,7 +55,7 @@ export const createCard = createSlice({
       state.value.mileage = change.payload;
     },
     changeDataPhoto: (state, change) => {
-      state.value.phfoto = change.payload;
+      state.value.photo = change.payload;
     },
     changeDataPrice: (state, change) => {
       state.value.price = change.payload;
@@ -62,11 +66,25 @@ export const createCard = createSlice({
     changeDataCategory: (state, change) => {
       state.value.category = change.payload;
     },
+    changeDataMode: (state, change) => {
+      state.value.modification = change.payload;
+    },
+    changeDataAvailability: (state, change) => {
+      state.value.availability = change.payload;
+    },
+    changeDataLocation: (state, change) => {
+      state.value.location = change.payload;
+    },
+    changeDataUser: (state, change) => {
+      state.value.user = change.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
 export const {
+  changeDataLocation,
+  changeDataUser,
   changeDataBodyWork,
   changeDataYear,
   changeDataMark,
@@ -80,6 +98,8 @@ export const {
   changeDataPhoto,
   changeDataPrice,
   changeDataTransmission,
+  changeDataMode,
+  changeDataAvailability,
 } = createCard.actions;
 
 export default createCard.reducer;

@@ -9,6 +9,7 @@ import LkNew from "./components/pages/LkNew/LkNew";
 import AuthNew from "./components/pages/AuthNew/AuthNew";
 import RegisterNews from "./components/pages/RegisterNews/RegisterNews";
 import CreateCardPage from "./components/pages/CreateCardPage/CreateCardPage";
+import Cabinet from "./components/Cabinet/Cabinet";
 
 export let routes = createBrowserRouter([
   {
@@ -42,5 +43,9 @@ export let routes = createBrowserRouter([
   {
     path: "/register-new",
     Component: RegisterNews,
+  },
+  {
+    path: "/cab",
+    Component: Cabinet,
   },
 ]);
