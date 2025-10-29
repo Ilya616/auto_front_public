@@ -12,6 +12,7 @@ import {
   changeDataPhoto,
   changeDataDescription,
   changeDataUser,
+  deleteDataPhoto,
 } from "../../store/createCard";
 
 import CreateCategoryCollapse from "../Collapse/CreateCategoryCollapse/CreateCategoryCollapse";
@@ -83,12 +84,32 @@ export default function CreateCardSpecifications(props) {
       data: data,
       headers: `Authorization: Bearer ${token}`,
       callback: (response) => {
+        dispatch(deleteDataPhoto([]));
         setLoader(false);
         navigate(`/lk`);
       },
       error: (error) => {
         setLoader(false);
 
+        console.log(error);
+      },
+    });
+  }
+
+  function setImage(evt) {
+    evt.preventDefault();
+    console.log(evt.target[0].files);
+    let formData = new FormData();
+    formData.append("file", evt.target[0].files[0]);
+
+    request({
+      method: "post",
+      url: VITE_BACK_API + "/download",
+      data: formData,
+      callback: (response) => {
+        console.log(response);
+      },
+      error: (error) => {
         console.log(error);
       },
     });
@@ -164,12 +185,6 @@ export default function CreateCardSpecifications(props) {
               посторонние предметы.
             </p>
             <div>
-              <input
-                type="file"
-                onChange={(evt) => {
-                  dispatch(changeDataPhoto(evt.target.value));
-                }}
-              />
               <Load />
             </div>
           </div>

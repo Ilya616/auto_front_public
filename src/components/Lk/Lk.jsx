@@ -10,6 +10,7 @@ import { request } from "../Libs/request";
 
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/userMake";
+import { deleteDataPhoto } from "../../store/createCard";
 
 let VITE_BACK_API = import.meta.env.VITE_BACK_API;
 
@@ -35,6 +36,7 @@ export default function Lk() {
           if (!response.data) {
             logout();
           } else {
+            dispatch(deleteDataPhoto([]));
             dispatch(setUser(response.data));
             setLoader(false);
           }

@@ -10,7 +10,7 @@ const initialState = {
     drive: { drive: null, id: null },
     transmission: { transmission: null, id: null },
     mileage: null,
-    photo: null,
+    photo: [],
     price: null,
     color: { color: null, id: null },
     description: "<p>text</p>",
@@ -55,8 +55,12 @@ export const createCard = createSlice({
       state.value.mileage = change.payload;
     },
     changeDataPhoto: (state, change) => {
+      state.value.photo.push(change.payload);
+    },
+    deleteDataPhoto: (state, change) => {
       state.value.photo = change.payload;
     },
+
     changeDataPrice: (state, change) => {
       state.value.price = change.payload;
     },
@@ -100,6 +104,7 @@ export const {
   changeDataTransmission,
   changeDataMode,
   changeDataAvailability,
+  deleteDataPhoto,
 } = createCard.actions;
 
 export default createCard.reducer;
