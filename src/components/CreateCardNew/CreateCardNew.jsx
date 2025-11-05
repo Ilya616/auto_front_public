@@ -4,7 +4,6 @@ import { request } from "../Libs/request";
 import { Flex, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
-import CreateCardMarksModel from "../CreateCardMarksModel/CreateCardMarksModel";
 import { useNavigate } from "react-router";
 let VITE_BACK_API = import.meta.env.VITE_BACK_API;
 
