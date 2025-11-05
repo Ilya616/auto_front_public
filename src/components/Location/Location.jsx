@@ -5,11 +5,11 @@ import styles from "./Location.module.scss";
 import { position } from "../Libs/position";
 
 export default function Location() {
-  let [sity, setSity] = useState();
+  let [sity, setSity] = useState("Нижний Новгород");
 
-  useEffect(() => {
-    position(setSity);
-  }, []);
+  // useEffect(() => {
+  //   position(setSity);
+  // }, []);
 
   return (
     <div className={styles.main}>

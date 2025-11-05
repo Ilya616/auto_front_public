@@ -9,6 +9,7 @@ import { setUser } from "../../store/userMake";
 import avatar from "../../../public/avatar/default.webp";
 import { request } from "../Libs/request";
 let VITE_BACK_API = import.meta.env.VITE_BACK_API;
+let VITE_BACK_STORAGE = import.meta.env.VITE_BACK_STORAGE;
 
 export default function Header() {
   const user = useSelector((state) => state.userMake.value);
@@ -18,10 +19,11 @@ export default function Header() {
   };
   return (
     <div className={styles.header}>
-      {console.log(user)}
       <div className={styles.header__logo}>
         <span className={styles.header__span}>-</span>
-        <img className={styles.header__img} src={logotip} alt="" />
+        <Link to="/">
+          <img className={styles.header__img} src={logotip} alt="" />
+        </Link>
       </div>
 
       <form action="" className={styles.header__form}>
@@ -50,7 +52,13 @@ export default function Header() {
         </>
       ) : (
         <>
-          <img className={styles.user__img} src={avatar} alt="" />
+          <Link to="/lk">
+            <img
+              className={styles.user__img}
+              src={VITE_BACK_STORAGE + user.avatar}
+              alt=""
+            />
+          </Link>
         </>
       )}
       <Link className={styles.header__btn} to="/lk/create-card">

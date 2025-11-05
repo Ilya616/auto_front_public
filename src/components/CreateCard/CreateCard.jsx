@@ -93,7 +93,7 @@ export default function CreateCard() {
 
   const handleEditorChange = (event, editor) => {
     const data = editor.getData();
-    dispatch(changeDataDescription(editorData));
+
     // let copy = Object.assign({}, card);
     // copy.description = data;
     // setCard(copy);
