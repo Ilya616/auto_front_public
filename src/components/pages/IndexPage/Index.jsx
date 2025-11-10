@@ -67,6 +67,7 @@ export default function Index() {
                 feature={null}
                 sign={element.sign}
                 location={element.location}
+                user={element.user}
               />
             ))}
           </>

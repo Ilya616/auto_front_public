@@ -6,14 +6,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import CreateCardCollapse from "../Collapse/CreateCardCollapse/CreateCardCollapse";
 
 import { useSelector, useDispatch } from "react-redux";
-import {
-  changeDataMilege,
-  changeDataPrice,
-  changeDataPhoto,
-  changeDataDescription,
-  changeDataUser,
-  deleteDataPhoto,
-} from "../../store/createCard";
+import { changeDataUser } from "../../store/createCard";
 
 import CreateCategoryCollapse from "../Collapse/CreateCategoryCollapse/CreateCategoryCollapse";
 import CreateDriveCollapse from "../Collapse/CreateDriveCollapse/CreateDriveCollapse";
@@ -28,7 +21,6 @@ import { useNavigate } from "react-router";
 import CreateModificCollapse from "../Collapse/CreateModificCollapse/CreateModificCollapse";
 import CreateCardAvailability from "../Collapse/CreateCardAvailability/CreateCardAvailability";
 import CreateCardContact from "../UI/Components/CreateCardContact/CreateCardContact";
-import { position } from "../Libs/position";
 
 let VITE_BACK_API = import.meta.env.VITE_BACK_API;
 
@@ -38,7 +30,7 @@ export default function CreateCardSpecifications(props) {
 
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
-  let navigate = useNavigate();
+
   const { TextArea } = Input;
   const onChange = (e) => {
     dispatch(changeDataDescription(e.target.value));
@@ -77,23 +69,23 @@ export default function CreateCardSpecifications(props) {
     let token = sessionStorage.getItem("token");
     console.log(data);
 
-    setLoader(true);
-    request({
-      method: "POST",
-      url: VITE_BACK_API + "/card/create",
-      data: data,
-      headers: `Authorization: Bearer ${token}`,
-      callback: (response) => {
-        dispatch(deleteDataPhoto([]));
-        setLoader(false);
-        navigate(`/lk`);
-      },
-      error: (error) => {
-        setLoader(false);
+    // setLoader(true);
+    // request({
+    //   method: "POST",
+    //   url: VITE_BACK_API + "/card/create",
+    //   data: data,
+    //   headers: `Authorization: Bearer ${token}`,
+    //   callback: (response) => {
+    //     dispatch(deleteDataPhoto([]));
+    //     setLoader(false);
+    //     navigate(`/lk`);
+    //   },
+    //   error: (error) => {
+    //     setLoader(false);
 
-        console.log(error);
-      },
-    });
+    //     console.log(error);
+    //   },
+    // });
   }
 
   function setImage(evt) {
@@ -167,14 +159,7 @@ export default function CreateCardSpecifications(props) {
           </div>
           <div className={props.step == 2 ? styles.main : "displayN"}>
             <h2>Пробег:</h2>
-            <Input
-              value={data.mileage}
-              className={styles.input}
-              placeholder="км"
-              onChange={(evt) => {
-                dispatch(changeDataMilege(evt.target.value));
-              }}
-            />
+            <Input className={styles.input} placeholder="км" name="milege" />
           </div>
           <div className={props.step == 2 ? styles.main : "displayN"}>
             <h2>Фото:</h2>
@@ -199,21 +184,18 @@ export default function CreateCardSpecifications(props) {
               <TextArea
                 showCount
                 maxLength={100}
-                onChange={onChange}
                 placeholder="Описание"
                 style={{ height: 120, resize: "none" }}
+                name="textarea"
               />
             </div>
           </div>
           <div className={props.step == 2 ? styles.main : "displayN"}>
             <h2>Стоимость:</h2>
             <Input
-              value={data.price}
               className={styles.input}
               placeholder="Стоимость"
-              onChange={(evt) => {
-                dispatch(changeDataPrice(evt.target.value));
-              }}
+              name="price"
             />
             <div className={styles.main}>
               <h2>Контакты</h2>
@@ -226,12 +208,13 @@ export default function CreateCardSpecifications(props) {
               <Input
                 className={styles.input}
                 placeholder="Город"
-                value={data.location}
+                name="location"
               />
             </div>
           </div>
           <div className={styles.main}>
-            <Button event={loadAdvertisement}>Разместить объявление</Button>
+            {/* <Button event={loadAdvertisement}>Разместить объявление</Button> */}
+            <Button>Разместить объявление</Button>
           </div>
         </>
       )}

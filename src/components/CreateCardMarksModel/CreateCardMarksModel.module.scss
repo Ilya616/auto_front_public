@@ -1,0 +1,29 @@
+.category {
+  display: flex;
+  &__title {
+    margin-right: 5px;
+  }
+}
+.input {
+  height: 45px;
+}
+
+.list {
+  width: 100%;
+  margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.link {
+  cursor: pointer;
+  transition: 0.5s linear;
+}
+.models {
+  display: grid;
+  grid-template-columns: 135px 135px 135px 135px;
+  grid-template-rows: 30px 30px 30px 30px;
+  align-items: center;
+  justify-items: center;
+  font-size: 14px;
+}
