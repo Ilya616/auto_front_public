@@ -77,7 +77,7 @@ export default function CarCard(props) {
         <div className={styles.wrapper}>
           <div className={styles.wrapper__main}>
             <div className={styles.diller}>
-              <h4 className={styles.diller__content}>A1 АВТО</h4>
+              <h4 className={styles.diller__content}>{props.user}</h4>
               <i className="fa-solid fa-circle-check"></i>
               <span>4.7</span>
               {props.sign ? (

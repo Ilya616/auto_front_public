@@ -42,7 +42,7 @@ export default function CreateCardNew() {
           </Flex>
         </div>
       ) : (
-        <CreateCardMarksModel marks={auto} />
+        <CreateCardMarksModel marks={auto} setLoader={setLoader} />
       )}
     </>
   );

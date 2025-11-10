@@ -1,9 +1,13 @@
 .category {
   display: flex;
+  &__title {
+    margin-right: 5px;
+  }
 }
 .input {
   height: 45px;
 }
+
 .list {
   width: 100%;
   margin-top: 15px;
