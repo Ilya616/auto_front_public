@@ -1,21 +1,23 @@
 import React, { useState } from "react";
-import styles from "./CreateEngineCollapse.module.scss";
+import styles from "./CreateColorCollapse.module.scss";
 import { Collapse } from "antd";
 import WrappCard from "../../UI/Components/WrappCard/WrappCard";
 
 import { useSelector, useDispatch } from "react-redux";
-import { changeDataEngine } from "../../../store/createCard";
+import { changeDataColor } from "../../../store/createCard";
+import ColorWrap from "../../UI/Components/ColorWrap/ColorWrap";
 
-export default function CreateEngineCollapse(props) {
-  const engineChecked = useSelector((state) => state.createCard.value.engine);
-
+export default function CreateColorCollapse(props) {
+  const colorChecked = useSelector((state) => state.createCard.value.color);
   const dispatch = useDispatch();
+
   const [choise, setChoise] = useState({ active_id: null });
-  const text = props.data.map((card, index) => (
-    <WrappCard
-      key={index}
-      card={card.type}
-      id={card.id}
+
+  const text = props.data.map((color, index) => (
+    <ColorWrap
+      key={color.id}
+      id={color.id}
+      color={color}
       changeData={changeData}
       choise={choise}
     />
@@ -27,7 +29,7 @@ export default function CreateEngineCollapse(props) {
       label: (
         <div className={styles.label}>
           <label>{props.head}</label>
-          <label>{engineChecked.engine}</label>
+          <label>{colorChecked.color}</label>
         </div>
       ),
       children: <div className={styles.wrapper}>{text}</div>,
@@ -39,7 +41,7 @@ export default function CreateEngineCollapse(props) {
     // console.log(key);
   };
   function changeData(data, id) {
-    dispatch(changeDataEngine({ engine: data, id: id }));
+    dispatch(changeDataColor({ color: data, id: id }));
     setChoise({ active_id: id });
   }
   return (

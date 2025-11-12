@@ -1,21 +1,28 @@
 import React, { useState } from "react";
-import styles from "./CreateEngineCollapse.module.scss";
+import styles from "./CreateCardAvailability.module.scss";
 import { Collapse } from "antd";
 import WrappCard from "../../UI/Components/WrappCard/WrappCard";
 
 import { useSelector, useDispatch } from "react-redux";
-import { changeDataEngine } from "../../../store/createCard";
+import { changeDataAvailability } from "../../../store/createCard";
 
-export default function CreateEngineCollapse(props) {
-  const engineChecked = useSelector((state) => state.createCard.value.engine);
+export default function CreateCardAvailability(props) {
+  const availabilityChecked = useSelector(
+    (state) => state.createCard.value.availability
+  );
+  const data = [
+    { avail: "В наличии" },
+    { avail: "На заказ" },
+    { avail: "В пути" },
+  ];
 
   const dispatch = useDispatch();
   const [choise, setChoise] = useState({ active_id: null });
-  const text = props.data.map((card, index) => (
+  const text = data.map((card, index) => (
     <WrappCard
       key={index}
-      card={card.type}
-      id={card.id}
+      card={card.avail}
+      id={index}
       changeData={changeData}
       choise={choise}
     />
@@ -27,7 +34,7 @@ export default function CreateEngineCollapse(props) {
       label: (
         <div className={styles.label}>
           <label>{props.head}</label>
-          <label>{engineChecked.engine}</label>
+          <label>{availabilityChecked}</label>
         </div>
       ),
       children: <div className={styles.wrapper}>{text}</div>,
@@ -35,16 +42,13 @@ export default function CreateEngineCollapse(props) {
     },
   ];
 
-  const onChange = (key) => {
-    // console.log(key);
-  };
   function changeData(data, id) {
-    dispatch(changeDataEngine({ engine: data, id: id }));
+    dispatch(changeDataAvailability(data));
     setChoise({ active_id: id });
   }
   return (
     <>
-      <Collapse defaultActiveKey={["1"]} onChange={onChange} items={items} />
+      <Collapse defaultActiveKey={["1"]} items={items} />
     </>
   );
 }

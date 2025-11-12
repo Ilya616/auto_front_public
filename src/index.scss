@@ -2,6 +2,9 @@
   width: 100%;
   background-color: #f8f8f8;
 }
+.displayN {
+  display: none;
+}
 
 @font-face {
   font-family: "YS Text Medium Regular";
@@ -26,7 +29,6 @@
   margin-bottom: 20px;
 }
 
-
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -38,11 +40,7 @@
 body {
   margin: 0;
   background: #eee;
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    '.SFNSText-Regular',
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, ".SFNSText-Regular",
     sans-serif;
   font-weight: 500;
   -webkit-font-smoothing: antialiased;
@@ -473,26 +471,26 @@ i.right-align {
 i.justify-align {
   background-image: url(icons/justify.svg);
 }
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
 @media print {
-	body {
-		margin: 0 !important;
-	}
+  body {
+    margin: 0 !important;
+  }
 }
 
 :root {
-	--ck-content-font-family: 'Lato';
+  --ck-content-font-family: "Lato";
 }
 
 .main-container {
-	font-family: var(--ck-content-font-family);
-	width: fit-content;
-	margin-left: auto;
-	margin-right: auto;
+  font-family: var(--ck-content-font-family);
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .editor-container_classic-editor .editor-container__editor {
-	min-width: 795px;
-	max-width: 795px;
+  min-width: 795px;
+  max-width: 795px;
 }

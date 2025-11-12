@@ -5,17 +5,18 @@ import WrappCard from "../../UI/Components/WrappCard/WrappCard";
 
 import { useSelector, useDispatch } from "react-redux";
 import { changeDataYear } from "../../../store/createCard";
+import { year } from "../../Libs/year";
 
 export default function CreateCardCollapse(props) {
   const yearChecked = useSelector((state) => state.createCard.value.year);
 
   const dispatch = useDispatch();
   const [choise, setChoise] = useState({ active_id: null });
-  const text = props.data.map((card, index) => (
+  const text = year().map((card, index) => (
     <WrappCard
       key={index}
       card={card}
-      index={index}
+      id={index}
       changeData={changeData}
       choise={choise}
     />

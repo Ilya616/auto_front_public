@@ -15,10 +15,7 @@ export const CARS = [
     price: "666666 Р",
     description: ["Комплектация", "Avangarde", "Черный"],
     specifications: ["2,0 л,237 л.с., дизель", "Полный привод"],
-    category: [
-      "Минивен", 
-      "Автомат"
-    ],
+    category: ["Минивен", "Автомат"],
     feature: [
       "Межсалонная перегородка",
       "Комплектация businessjet",

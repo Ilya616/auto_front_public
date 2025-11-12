@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router";
 import Index from "../src/components/pages/IndexPage/Index";
 import NewsPage from "./components/pages/NewsPage/NewsPage";
 import Contacts from "./components/pages/ContactsPage/Contacts";
-import Auth from "./components/pages/Auth/Auth";
 
 // import LK from "./components/pages/Lk/Lk";
 import LkNew from "./components/pages/LkNew/LkNew";
@@ -23,10 +22,7 @@ export let routes = createBrowserRouter([
     path: "/contacts",
     Component: Contacts,
   },
-  {
-    path: "/auth",
-    Component: Auth,
-  },
+
   {
     path: "/lk",
     Component: LkNew,

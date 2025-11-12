@@ -111,3 +111,11 @@
     width: 30%;
   }
 }
+.user {
+  display: flex;
+  width: 90%;
+  &__img {
+    width: 50px;
+    border-radius: 50%;
+  }
+}

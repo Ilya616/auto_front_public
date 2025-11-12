@@ -1,0 +1,16 @@
+.input {
+  height: 45px;
+}
+.main {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+.form {
+  height: 45px;
+  width: 55%;
+  &__select {
+    height: 45px;
+    width: 20%;
+  }
+}

@@ -2,21 +2,25 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   value: {
-    mark: {name: null, id: null},
-    model: {name: null, id: null},
+    mark: { mark: null, id: null },
+    model: { model: null, id: null },
     year: null,
-    bodywork: {name: null, id: null},
-    engine: {name: null, id: null},
-    drive: {name: null, id: null},
-    transmission: {name: null, id: null},
+    bodywork: { bodywork: null, id: null },
+    engine: { engine: null, id: null },
+    drive: { drive: null, id: null },
+    transmission: { transmission: null, id: null },
     mileage: null,
-    phfoto: null,
+    photo: null,
     price: null,
-    color: {name: null, id: null},
+    color: { color: null, id: null },
     description: "<p>text</p>",
+    category: 1,
+    modification: { mode: "155 л.с. (2.0 MT)", id: 1 },
+    user: { name: null, id: null },
+    location: "Нижний Новгород",
+    availability: null,
   },
 };
-
 
 export const createCard = createSlice({
   name: "createCard",
@@ -51,7 +55,7 @@ export const createCard = createSlice({
       state.value.mileage = change.payload;
     },
     changeDataPhoto: (state, change) => {
-      state.value.phfoto = change.payload;
+      state.value.photo = change.payload;
     },
     changeDataPrice: (state, change) => {
       state.value.price = change.payload;
@@ -59,11 +63,28 @@ export const createCard = createSlice({
     changeDataTransmission: (state, change) => {
       state.value.transmission = change.payload;
     },
+    changeDataCategory: (state, change) => {
+      state.value.category = change.payload;
+    },
+    changeDataMode: (state, change) => {
+      state.value.modification = change.payload;
+    },
+    changeDataAvailability: (state, change) => {
+      state.value.availability = change.payload;
+    },
+    changeDataLocation: (state, change) => {
+      state.value.location = change.payload;
+    },
+    changeDataUser: (state, change) => {
+      state.value.user = change.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
 export const {
+  changeDataLocation,
+  changeDataUser,
   changeDataBodyWork,
   changeDataYear,
   changeDataMark,
@@ -77,6 +98,8 @@ export const {
   changeDataPhoto,
   changeDataPrice,
   changeDataTransmission,
+  changeDataMode,
+  changeDataAvailability,
 } = createCard.actions;
 
 export default createCard.reducer;

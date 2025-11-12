@@ -15,7 +15,7 @@ export default function CreateDriveCollapse(props) {
     <WrappCard
       key={index}
       card={card.drive}
-      index={index}
+      id={card.id}
       changeData={changeYear}
       choise={choise}
     />
@@ -27,7 +27,7 @@ export default function CreateDriveCollapse(props) {
       label: (
         <div className={styles.label}>
           <label>{props.head}</label>
-          <label>{driveChecked.name}</label>
+          <label>{driveChecked.drive}</label>
         </div>
       ),
       children: <div className={styles.wrapper}>{text}</div>,
@@ -39,7 +39,7 @@ export default function CreateDriveCollapse(props) {
     // console.log(key);
   };
   function changeYear(data, id) {
-    dispatch(changeDataDrive(data));
+    dispatch(changeDataDrive({ drive: data, id: id }));
     setChoise({ active_id: id });
   }
   return (

@@ -1,17 +1,24 @@
 import logotip from "/2.svg";
 import Icon from "../UI/Components/Icons/Icon";
 import styles from "./Header.module.scss";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Switch } from "antd";
 import { Link, useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+import { setUser } from "../../store/userMake";
+import avatar from "../../../public/avatar/default.webp";
+import { request } from "../Libs/request";
+let VITE_BACK_API = import.meta.env.VITE_BACK_API;
 
 export default function Header() {
-  const [user, setUser] = useState(false);
+  const user = useSelector((state) => state.userMake.value);
+
   const onChange = (checked) => {
     console.log(`switch to ${checked}`);
   };
   return (
     <div className={styles.header}>
+      {console.log(user)}
       <div className={styles.header__logo}>
         <span className={styles.header__span}>-</span>
         <img className={styles.header__img} src={logotip} alt="" />
@@ -35,14 +42,16 @@ export default function Header() {
         <Icon icon="fa-regular fa-comment-dots" content={"Сообщения"} />
         <Icon icon="fa-solid fa-car" content={"Я продаю"} />
       </div>
-      {!user ? (
+      {user == null ? (
         <>
           <Link className={styles.header__log} to="/auth-new">
             Войти
           </Link>
         </>
       ) : (
-        <div></div>
+        <>
+          <img className={styles.user__img} src={avatar} alt="" />
+        </>
       )}
       <Link className={styles.header__btn} to="/lk/create-card">
         Разместить объявление

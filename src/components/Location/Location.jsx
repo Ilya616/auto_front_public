@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LOCATION } from "../Libs/location";
 import LocationLink from "../UI/Components/LocationLink/LocationLink";
 import styles from "./Location.module.scss";
+import { position } from "../Libs/position";
 
 export default function Location() {
+  let [sity, setSity] = useState();
+
+  useEffect(() => {
+    position(setSity);
+  }, []);
+
   return (
     <div className={styles.main}>
       <div className={styles.main__nav}>
@@ -26,7 +33,7 @@ export default function Location() {
         )}
       </div>
 
-      <LocationLink>Локация</LocationLink>
+      <LocationLink>{sity}</LocationLink>
     </div>
   );
 }
