@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./AdvertisementTable.module.scss";
 import CardLk from "../UI/Components/CardLk/CardLk";
 
-export default function AdvertisementTable() {
+export default function AdvertisementTable(props) {
   return (
     <div className={styles.table}>
       <div className={styles.table__category}>
@@ -13,7 +13,14 @@ export default function AdvertisementTable() {
       </div>
       <hr />
       <div className={styles.table__lis}>
-        <CardLk />
+        {props.cards.map((card, index) => (
+          <CardLk
+            key={index}
+            carName={card.modelName}
+            price={card.price}
+            carImg={card.dataImg[0].image}
+          />
+        ))}
       </div>
     </div>
   );

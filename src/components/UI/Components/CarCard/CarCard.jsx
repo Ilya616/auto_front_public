@@ -3,7 +3,7 @@ import styles from "./CarCard.module.scss";
 
 import { Carousel } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
-
+const VITE_BACK_STORAGE = import.meta.env.VITE_BACK_STORAGE;
 export default function CarCard(props) {
   const contentStyle = {
     margin: 0,
@@ -19,12 +19,12 @@ export default function CarCard(props) {
     <div className={styles.main}>
       <div className={styles.main__carusel}>
         <Carousel arrows infinite={false}>
-          {props.dataPath.map((element, index) => (
-            <div key={index} className={styles.carusel}>
+          {props.dataPath.map((element) => (
+            <div className={styles.carusel}>
               <h3 style={contentStyle}>
                 <img
                   className={styles.carusel__img}
-                  src={element.path}
+                  src={VITE_BACK_STORAGE + element.image}
                   alt="preview"
                 />
               </h3>
@@ -66,16 +66,18 @@ export default function CarCard(props) {
           </div>
         </div>
         <div className={styles.differences}>
-          {props.feature.map((element, index) => (
-            <div key={index} className={styles.differences__wrap}>
-              {element}
-            </div>
-          ))}
+          {props.feature != null
+            ? props.feature.map((element, index) => (
+                <div key={index} className={styles.differences__wrap}>
+                  {element}
+                </div>
+              ))
+            : ""}
         </div>
         <div className={styles.wrapper}>
           <div className={styles.wrapper__main}>
             <div className={styles.diller}>
-              <h4 className={styles.diller__content}>A1 АВТО</h4>
+              <h4 className={styles.diller__content}>{props.user}</h4>
               <i className="fa-solid fa-circle-check"></i>
               <span>4.7</span>
               {props.sign ? (

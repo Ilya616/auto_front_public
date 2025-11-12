@@ -5,9 +5,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { changeDataCategory } from "../../../../store/createCard";
 
 export default function TabsAdvertisement(props) {
-  const data = useSelector((state) => state.createCard.value.category);
+  // const data = useSelector((state) => state.createCard.value.category);
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const onChange = (key) => {
     console.log(key);
     dispatch(changeDataCategory(key));
@@ -29,5 +29,12 @@ export default function TabsAdvertisement(props) {
       children: "",
     },
   ];
-  return <Tabs defaultActiveKey="Легковые" items={items} onChange={onChange} />;
+  return (
+    <Tabs
+      name="caregory"
+      defaultActiveKey="Легковые"
+      items={items}
+      onChange={onChange}
+    />
+  );
 }

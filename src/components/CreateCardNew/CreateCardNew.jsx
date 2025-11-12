@@ -4,8 +4,8 @@ import { request } from "../Libs/request";
 import { Flex, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
-import CreateCardMarksModel from "../CreateCardMarksModel/CreateCardMarksModel";
 import { useNavigate } from "react-router";
+import CreateCardMarksModel from "../CreateCardMarksModel/CreateCardMarksModel";
 let VITE_BACK_API = import.meta.env.VITE_BACK_API;
 
 export default function CreateCardNew() {
@@ -42,7 +42,7 @@ export default function CreateCardNew() {
           </Flex>
         </div>
       ) : (
-        <CreateCardMarksModel marks={auto} />
+        <CreateCardMarksModel marks={auto} setLoader={setLoader} />
       )}
     </>
   );
