@@ -4,52 +4,53 @@ import Button from "../UI/Components/Button/Button";
 import ColorMenu from "../UI/Components/ColorMenu/ColorMenu";
 import { useSelector, useDispatch } from "react-redux";
 import { changeDataDescription } from "../../store/createCard";
+import Editor from "../Editor/Editor";
 
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import {
-  ClassicEditor,
-  Autosave,
-  Essentials,
-  Paragraph,
-  List,
-  ListProperties,
-  Table,
-  TableToolbar,
-  TableCaption,
-  TableCellProperties,
-  TableColumnResize,
-  TableProperties,
-  TodoList,
-  ShowBlocks,
-  GeneralHtmlSupport,
-  HtmlEmbed,
-  HtmlComment,
-  FullPage,
-  Bold,
-  Italic,
-  Underline,
-  Strikethrough,
-  Code,
-  Subscript,
-  Superscript,
-  FontBackgroundColor,
-  FontColor,
-  FontFamily,
-  FontSize,
-  RemoveFormat,
-  Highlight,
-} from "ckeditor5";
-import { SourceEditingEnhanced } from "ckeditor5-premium-features";
+// import { CKEditor } from "@ckeditor/ckeditor5-react";
+// import {
+//   ClassicEditor,
+//   Autosave,
+//   Essentials,
+//   Paragraph,
+//   List,
+//   ListProperties,
+//   Table,
+//   TableToolbar,
+//   TableCaption,
+//   TableCellProperties,
+//   TableColumnResize,
+//   TableProperties,
+//   TodoList,
+//   ShowBlocks,
+//   GeneralHtmlSupport,
+//   HtmlEmbed,
+//   HtmlComment,
+//   FullPage,
+//   Bold,
+//   Italic,
+//   Underline,
+//   Strikethrough,
+//   Code,
+//   Subscript,
+//   Superscript,
+//   FontBackgroundColor,
+//   FontColor,
+//   FontFamily,
+//   FontSize,
+//   RemoveFormat,
+//   Highlight,
+// } from "ckeditor5";
+// import { SourceEditingEnhanced } from "ckeditor5-premium-features";
 
-import translations from "ckeditor5/translations/ru.js";
-import premiumFeaturesTranslations from "ckeditor5-premium-features/translations/ru.js";
+// import translations from "ckeditor5/translations/ru.js";
+// import premiumFeaturesTranslations from "ckeditor5-premium-features/translations/ru.js";
 
-import "ckeditor5/ckeditor5.css";
-import "ckeditor5-premium-features/ckeditor5-premium-features.css";
+// import "ckeditor5/ckeditor5.css";
+// import "ckeditor5-premium-features/ckeditor5-premium-features.css";
 
-let VITE_BACK_API = import.meta.env.VITE_BACK_API;
-const LICENSE_KEY =
-  "eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NjE2MDk1OTksImp0aSI6IjRhZDNjZmFjLWM1YWUtNGRjMi1hN2I3LTk4M2JjMGY0ZDk5ZCIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6ImM5Y2Y2MmNkIn0.kydxkH-Kkr9JRpHTty6KVYXDoR6Mdd_hMVB1PdI5ypWsQm1_w5uXgBX5E42Ew_UcwPE7JTKzFm4XTVz8WhngsQ";
+// let VITE_BACK_API = import.meta.env.VITE_BACK_API;
+// const LICENSE_KEY =
+//   "eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NjE2MDk1OTksImp0aSI6IjRhZDNjZmFjLWM1YWUtNGRjMi1hN2I3LTk4M2JjMGY0ZDk5ZCIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6ImM5Y2Y2MmNkIn0.kydxkH-Kkr9JRpHTty6KVYXDoR6Mdd_hMVB1PdI5ypWsQm1_w5uXgBX5E42Ew_UcwPE7JTKzFm4XTVz8WhngsQ";
 
 export default function CreateCard() {
   const description = useSelector(
@@ -82,10 +83,10 @@ export default function CreateCard() {
   // });
   // let [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setIsLayoutReady(true);
-    return () => setIsLayoutReady(false);
-  }, []);
+  // useEffect(() => {
+  //   setIsLayoutReady(true);
+  //   return () => setIsLayoutReady(false);
+  // }, []);
 
   const handleEditorReady = (editor) => {
     setEditorInstance(editor);
@@ -94,9 +95,9 @@ export default function CreateCard() {
   const handleEditorChange = (event, editor) => {
     const data = editor.getData();
 
-    // let copy = Object.assign({}, card);
-    // copy.description = data;
-    // setCard(copy);
+    let copy = Object.assign({}, card);
+    copy.description = data;
+    setCard(copy);
   };
 
   const handleEditorBlur = (event, editor) => {};
@@ -343,76 +344,84 @@ export default function CreateCard() {
   //   setCard(copyCard);
   // }
 
-  const getEditorData = () => {
-    if (editorInstance) {
-      const data = editorInstance.getData();
-      return data;
-    }
-    return editorData;
-  };
+  // const getEditorData = () => {
+  //   if (editorInstance) {
+  //     const data = editorInstance.getData();
+  //     return data;
+  //   }
+  //   return editorData;
+  // };
 
   return (
-    <div>
-      <div>
-        <div className="main-container">
-          <div
-            className="editor-container editor-container_classic-editor"
-            ref={editorContainerRef}
-          >
-            <div className="editor-container__editor">
-              <div ref={editorRef}>
-                {editorConfig && (
-                  <CKEditor
-                    editor={ClassicEditor}
-                    config={editorConfig}
-                    onReady={handleEditorReady}
-                    onChange={handleEditorChange}
-                    onBlur={handleEditorBlur}
-                    onFocus={handleEditorFocus}
-                  />
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    // <div>
+    //   <div>
+    //     <div className="main-container">
+    //       <div
+    //         className="editor-container editor-container_classic-editor"
+    //         ref={editorContainerRef}
+    //       >
+    //         <div className="editor-container__editor">
+    //           <div ref={editorRef}>
+    //             {editorConfig && (
+    //               <CKEditor
+    //                 editor={ClassicEditor}
+    //                 config={editorConfig}
+    //                 onReady={handleEditorReady}
+    //                 onChange={handleEditorChange}
+    //                 onBlur={handleEditorBlur}
+    //                 onFocus={handleEditorFocus}
+    //               />
+    //             )}
+    //           </div>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
+    <Editor
+      data={editorData}
+      onReady={handleEditorReady}
+      onChange={handleEditorChange}
+      onBlur={handleEditorBlur}
+      onFocus={handleEditorFocus}
+      config={editorConfig}
+    />
   );
 }
 
-function configUpdateAlert(config) {
-  if (configUpdateAlert.configUpdateAlertShown) {
-    return;
-  }
+// function configUpdateAlert(config) {
+//   if (configUpdateAlert.configUpdateAlertShown) {
+//     return;
+//   }
 
-  const isModifiedByUser = (currentValue, forbiddenValue) => {
-    if (currentValue === forbiddenValue) {
-      return false;
-    }
+//   const isModifiedByUser = (currentValue, forbiddenValue) => {
+//     if (currentValue === forbiddenValue) {
+//       return false;
+//     }
 
-    if (currentValue === undefined) {
-      return false;
-    }
+//     if (currentValue === undefined) {
+//       return false;
+//     }
 
-    return true;
-  };
+//     return true;
+//   };
 
-  const valuesToUpdate = [];
+//   const valuesToUpdate = [];
 
-  configUpdateAlert.configUpdateAlertShown = true;
+//   configUpdateAlert.configUpdateAlertShown = true;
 
-  if (!isModifiedByUser(config.licenseKey, "<YOUR_LICENSE_KEY>")) {
-    valuesToUpdate.push("LICENSE_KEY");
-  }
+//   if (!isModifiedByUser(config.licenseKey, "<YOUR_LICENSE_KEY>")) {
+//     valuesToUpdate.push("LICENSE_KEY");
+//   }
 
-  if (valuesToUpdate.length) {
-    window.alert(
-      [
-        "Please update the following values in your editor config",
-        "to receive full access to Premium Features:",
-        "",
-        ...valuesToUpdate.map((value) => ` - ${value}`),
-      ].join("\n")
-    );
-  }
-}
+//   if (valuesToUpdate.length) {
+//     window.alert(
+//       [
+//         "Please update the following values in your editor config",
+//         "to receive full access to Premium Features:",
+//         "",
+//         ...valuesToUpdate.map((value) => ` - ${value}`),
+//       ].join("\n")
+//     );
+//   }
+// }
