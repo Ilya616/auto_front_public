@@ -13,6 +13,8 @@ import { deleteDataPhoto } from "../../store/createCard";
 import ModalInfo from "../UI/Components/ModalInfo/ModalInfo";
 import Button from "../UI/Components/Button/Button";
 
+import axios from "axios";
+
 let VITE_BACK_API = import.meta.env.VITE_BACK_API;
 let VITE_BACK_STORAGE = import.meta.env.VITE_BACK_STORAGE;
 
@@ -82,24 +84,27 @@ export default function Lk() {
   }
   function changeUser(form) {
     const background = form.get("background");
+    const file = form.get("file");
     const name = form.get("name");
     const location = form.get("location");
-    const file = form.get("file");
-    console.log(file);
+
+    const formData = new FormData();
+    formData.append("name", form.get("name"));
+    formData.append("location", form.get("location"));
+    formData.append("userId", user.id);
+
     setLoader({ lk: loader.lk, settings: true });
+    if (file instanceof File) {
+      formData.append("avatar", file);
+    }
+    if (background instanceof File) {
+      formData.append("background", background);
+    }
     request({
       method: "post",
       url: VITE_BACK_API + "/user/change",
-      data: {
-        name: name,
-        location: location,
-        avatar: file,
-        userId: user.id,
-        background: background,
-      },
-      headers: { "Content-Type": "multipart/form-data" },
+      data: formData,
       callback: (response) => {
-        console.log(response);
         if (response.status == 200) {
           setLoader({ lk: loader.lk, settings: false });
           setModal(false);
@@ -113,8 +118,11 @@ export default function Lk() {
       },
       error: (error) => {
         console.log(error);
-      },
+      },      
+      
     });
+
+
   }
   return (
     <div className={styles.page}>
