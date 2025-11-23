@@ -10,10 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@apollo/client": "^4.0.9",
     "@ckeditor/ckeditor5-react": "^11.0.0",
     "@lexical/react": "^0.37.0",
     "ckeditor5": "^47.0.0",
     "ckeditor5-premium-features": "^47.0.0",
+    "graphql": "^16.12.0",
     "lexical": "^0.37.0",
     "quill": "^2.0.3",
     "react": "^19.1.1",
