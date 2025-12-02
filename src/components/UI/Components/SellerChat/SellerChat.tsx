@@ -3,20 +3,19 @@ import { List, Card, Badge, Avatar, Input, Button, message, Spin } from 'antd';
 import { MessageOutlined, UserOutlined } from '@ant-design/icons';
 import { 
   Chat, 
-  BuyerChatsResponse, 
+  SellerChatsResponse, 
   SendMessageResponse, 
   SendMessageVariables, 
   MarkMessagesAsReadResponse, 
-  MarkMessagesAsReadVariables 
+  MarkMessagesAsReadVariables  
 } from '@/types/chat';
-import { GET_BUYER_CHATS } from '../../../../graphql/queries';
+import { GET_SELLER_CHATS } from '@/graphql/queries';
+import { SEND_MESSAGE, MARK_MESSAGES_AS_READ } from '@/graphql/mutations';
 import { useQuery, useMutation } from '@apollo/client/react';
 import echo from '@/utils/echo';
-import { SEND_MESSAGE, MARK_MESSAGES_AS_READ } from '@/graphql/mutations';
 import { getCurrentUserId, getCurrentUserName, updateUserCache } from '@/utils/user';
-import CreateChatButton from '../CreateChatButton/CreateChatButton';
 
-const OnlineChat: React.FC = () => {
+const SellerChatInterface: React.FC = () => {
   const [chats, setChats] = useState<Chat[]>([]);
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -83,11 +82,11 @@ const OnlineChat: React.FC = () => {
   const currentUserName = currentUser?.name || 'Гость';
 
   const { 
-    data: chatsData, 
-    loading: chatsLoading, 
-    error: chatsError, 
+    data, 
+    loading, 
+    error, 
     refetch 
-  } = useQuery<BuyerChatsResponse>(GET_BUYER_CHATS, {
+  } = useQuery<SellerChatsResponse>(GET_SELLER_CHATS, {
     skip: !currentUserId || loadingUser,
   });
 
@@ -108,18 +107,18 @@ const OnlineChat: React.FC = () => {
 
   // Загружаем чаты БЕЗ изменения имен отправителей
   useEffect(() => {
-    if (chatsData?.buyerChats && currentUserId) {
+    if (data?.sellerChats && currentUserId) {
       // НЕ МЕНЯЕМ ИМЕНА ОТПРАВИТЕЛЕЙ - оставляем как есть с сервера
-      setChats(chatsData.buyerChats);
+      setChats(data.sellerChats);
       
       if (selectedChat) {
-        const currentChat = chatsData.buyerChats.find(chat => chat.id === selectedChat.id);
+        const currentChat = data.sellerChats.find(chat => chat.id === selectedChat.id);
         if (currentChat) {
           setLocalMessages([...currentChat.messages]);
         }
       }
     }
-  }, [chatsData, selectedChat, currentUserId]);
+  }, [data, selectedChat, currentUserId]);
 
   // Обработчик WebSocket событий
   useEffect(() => {
@@ -161,7 +160,11 @@ const OnlineChat: React.FC = () => {
           setLocalMessages(prev => 
             prev.map(msg => 
               msg.id === e.message.id 
-                ? { ...msg, read: true, updated_at: e.message.updated_at || new Date().toISOString() }
+                ? { 
+                    ...msg, 
+                    read: true,
+                    updated_at: e.message.updated_at || new Date().toISOString()
+                  }
                 : msg
             )
           );
@@ -185,7 +188,7 @@ const OnlineChat: React.FC = () => {
 
   // Мониторинг WebSocket подключения
   useEffect(() => {
-    console.log('🔌 OnlineChat: Начинаю отслеживание статуса WebSocket');
+    console.log('🔌 SellerChatInterface: Начинаю отслеживание статуса WebSocket');
 
     const handleConnected = () => {
       console.log('✅ WebSocket подключен');
@@ -245,7 +248,6 @@ const OnlineChat: React.FC = () => {
 
       if (result.data?.sendMessage) {
         console.log('💾 Сообщение сохранено в БД, ID:', result.data.sendMessage.id);
-        // WebSocket событие само обновит сообщение
       }
 
     } catch (error: any) {
@@ -302,7 +304,7 @@ const OnlineChat: React.FC = () => {
       console.error('❌ Ошибка отметки сообщений прочитанными:', error);
     }
   };
-  
+
   const getSenderName = (message: any): string => {
     if (!message?.sender) return 'Неизвестный';
     // Просто возвращаем имя отправителя как есть
@@ -325,8 +327,7 @@ const OnlineChat: React.FC = () => {
   }));
 
   const filteredChats = enhancedChats.filter(chat => 
-    chat.seller.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    chat.car_card?.description?.toLowerCase().includes(searchTerm.toLowerCase())
+    chat.buyer.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loadingUser) {
@@ -349,8 +350,8 @@ const OnlineChat: React.FC = () => {
     );
   }
 
-  if (chatsLoading) return <div>Загрузка чатов...</div>;
-  if (chatsError) return <div>Ошибка загрузки чатов: {chatsError.message}</div>;
+  if (loading) return <div>Загрузка чатов...</div>;
+  if (error) return <div>Ошибка загрузки чатов: {error.message}</div>;
 
   return (
     <div style={{ display: 'flex', height: '100%', gap: 16, position: 'relative' }}>
@@ -371,9 +372,9 @@ const OnlineChat: React.FC = () => {
         </Button>
       </div>
 
-      {/* Левая панель - список чатов */}
+      {/* Список чатов */}
       <Card 
-        title="Мои чаты" 
+        title="Чаты с покупателями" 
         style={{ width: 400, display: 'flex', flexDirection: 'column' }}
         styles={{
           body: { 
@@ -401,9 +402,8 @@ const OnlineChat: React.FC = () => {
         </div>
 
         <div style={{ padding: '0 16px', flexShrink: 0 }}>
-          <CreateChatButton onChatCreated={refetch} />
           <Input
-            placeholder="Поиск по продавцам..."
+            placeholder="Поиск по покупателям..."
             value={searchTerm}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
             style={{ marginBottom: 16 }}
@@ -414,7 +414,7 @@ const OnlineChat: React.FC = () => {
         <div style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
           <List
             dataSource={filteredChats}
-            loading={chatsLoading}
+            loading={loading}
             renderItem={(chat: Chat) => (
               <List.Item
                 key={chat.id}
@@ -429,24 +429,12 @@ const OnlineChat: React.FC = () => {
                 <List.Item.Meta
                   avatar={
                     <Badge count={chat.unreadCount} size="small">
-                      <Avatar 
-                        icon={<UserOutlined />} 
-                        src={chat.seller.avatar} 
-                      />
+                      <Avatar icon={<UserOutlined />} src={chat.buyer.avatar} />
                     </Badge>
                   }
-                  title={chat.seller.name}
+                  title={chat.buyer.name}
                   description={
                     <div>
-                      <div style={{ 
-                        whiteSpace: 'nowrap', 
-                        overflow: 'hidden', 
-                        textOverflow: 'ellipsis',
-                        fontSize: '12px',
-                        fontWeight: 'bold'
-                      }}>
-                        {chat.car_card?.description || 'Объявление'}
-                      </div>
                       {chat.lastMessage && (
                         <>
                           <div style={{ 
@@ -471,13 +459,9 @@ const OnlineChat: React.FC = () => {
         </div>
       </Card>
 
-      {/* Правая панель - выбранный чат */}
+      {/* Область выбранного чата */}
       <Card 
-        title={
-          selectedChat 
-            ? `Чат с ${selectedChat.seller.name}`
-            : "Выберите чат"
-        }
+        title={selectedChat ? `Чат с ${selectedChat.buyer.name}` : "Выберите чат"}
         style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
         styles={{
           body: { 
@@ -498,17 +482,15 @@ const OnlineChat: React.FC = () => {
             </div>
 
             {/* История сообщений */}
-            <div 
-              style={{ 
-                flex: 1,
-                minHeight: 0,
-                overflowY: 'auto', 
-                padding: '16px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px'
-              }}
-            >
+            <div style={{ 
+              flex: 1,
+              minHeight: 0,
+              overflowY: 'auto', 
+              padding: '16px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px'
+            }}>
               {localMessages.map((message) => {
                 const messageId = message?.id || `msg-${message?.created_at || Date.now()}-${Math.random()}`;
                 const content = message?.content || '';
@@ -585,7 +567,7 @@ const OnlineChat: React.FC = () => {
             flexDirection: 'column'
           }}>
             <MessageOutlined style={{ fontSize: 48, marginBottom: 16 }} />
-            <div>Выберите чат для общения</div>
+            <div>Выберите чат для начала общения</div>
             <div style={{ marginTop: 8, fontSize: 12 }}>
               WebSocket: {isConnected ? '✅ Подключен' : '❌ Отключен'}
             </div>
@@ -596,4 +578,4 @@ const OnlineChat: React.FC = () => {
   );
 };
 
-export default OnlineChat;
+export default SellerChatInterface;

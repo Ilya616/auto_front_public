@@ -40,7 +40,7 @@ export const GET_BUYER_CHATS = gql`
       }
       messages {
         content
-        createdAt
+        created_at
         sender {
           name
         }
@@ -66,10 +66,26 @@ export const GET_SELLER_CHATS = gql`
       }
       messages {
         content
-        createdAt
+        created_at
         sender {
           name
         }
+      }
+    }
+  }
+`;
+
+export const GET_AVAILABLE_SELLERS = gql`
+  query GetAvailableSellers {
+    availableSellers {
+      id
+      name
+      email
+      avatar
+      announcements {
+        id
+        description
+        price
       }
     }
   }

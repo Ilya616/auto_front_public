@@ -53,7 +53,12 @@ const BuyerChatButton: React.FC = () => {
         zIndex: 1000,
         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
       }}
-      bodyStyle={{ padding: 0, height: 'calc(100% - 57px)' }}
+      styles={{
+        body: { 
+          padding: 0, 
+          height: 'calc(100% - 57px)' 
+        }
+      }}
     >
       <OnlineChat />
     </Card>

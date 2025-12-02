@@ -16,6 +16,7 @@ export const createApolloClient = () => {
   });
 
   const authLink = setContext((_, { headers }) => {
+    // ТОЛЬКО из localStorage/sessionStorage, без дефолтного токена
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
     
     return {
