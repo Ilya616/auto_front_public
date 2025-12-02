@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import IndexLayout from "../../Layouts/IndexLayout/IndexLayout";
 import CarCard from "@uiComponents/CarCard/CarCard";
+import OnlineChat from "@uiComponents/OnlineChat/OnlineChat";
 import { request } from "../../Libs/request";
 import { SettingOutlined, RollbackOutlined } from "@ant-design/icons";
 import { Flex, Spin } from "antd";
@@ -8,6 +9,10 @@ import { setUser } from "../../../store/userMake";
 import { CARS } from "../../Libs/Cars";
 import { useDispatch } from "react-redux";
 import { deleteDataPhoto } from "../../../store/createCard";
+import SellerChat from "../../UI/Components/SellerChat/SellerChat";
+import { useLazyQuery } from '@apollo/client/react';
+import { GET_ROLES, GET_USER } from "../../../graphql/queries";
+import SellerChatButton from "../../UI/Components/SellerChat/SellerChatButton";
 let VITE_BACK_API = import.meta.env.VITE_BACK_API;
 
 export default function Index() {
@@ -48,6 +53,7 @@ export default function Index() {
       });
     }
   }, []);
+ 
   return (
     <>
       <IndexLayout cars={CARS}>
@@ -97,6 +103,7 @@ export default function Index() {
             </Flex>
           </>
         )}
+        
       </IndexLayout>
     </>
   );

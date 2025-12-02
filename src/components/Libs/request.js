@@ -17,6 +17,7 @@ export function request(
     data: obj.data,
     body: obj.body,
     headers: obj.headers,
+    
   })
     .then(function (response) {
       obj.callback(response);

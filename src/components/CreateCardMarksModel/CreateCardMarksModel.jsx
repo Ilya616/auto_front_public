@@ -68,6 +68,14 @@ export default function CreateCardMarksModel(props) {
       error: (error) => {
         props.setLoader(false);
 
+        if (response.data.user) {
+          // 1. Обновляем Redux store
+          dispatch(setUser(response.data.user));
+          
+          // 2. Обновляем sessionStorage
+          sessionStorage.setItem('user_id', response.data.user.id);
+        }
+
         console.log(error);
       },
     });
