@@ -32,19 +32,41 @@ export const GET_BUYER_CHATS = gql`
         name
         avatar
       }
-      car_card  {
+      buyer {
+        id
+        name
+        avatar
+      }
+      car_card {
         id
         description
         price
         year
       }
       messages {
+        id
         content
         created_at
+        updated_at
+        read
         sender {
+          id
+          name
+          avatar
+        }
+      }
+      lastMessage {
+        id
+        content
+        created_at
+        read
+        sender {
+          id
           name
         }
       }
+      unreadCount
+      created_at
     }
   }
 `;
@@ -53,24 +75,35 @@ export const GET_SELLER_CHATS = gql`
   query GetSellerChats {
     sellerChats {
       id
+      seller {
+        id
+        name
+        avatar
+      }
       buyer {
         id
         name
         avatar
       }
-      car_card  {
+      car_card {
         id
         description
         price
         year
       }
       messages {
+        id
         content
         created_at
+        read
         sender {
+          id
           name
+          avatar
         }
       }
+      unreadCount
+      created_at
     }
   }
 `;

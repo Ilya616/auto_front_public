@@ -15,6 +15,7 @@ import echo from '@/utils/echo';
 import { SEND_MESSAGE, MARK_MESSAGES_AS_READ } from '@/graphql/mutations';
 import { getCurrentUserId, getCurrentUserName, updateUserCache } from '@/utils/user';
 import CreateChatButton from '../CreateChatButton/CreateChatButton';
+import styles from './OnlineChat.module.scss';
 
 const OnlineChat: React.FC = () => {
   const [chats, setChats] = useState<Chat[]>([]);
@@ -42,7 +43,6 @@ const OnlineChat: React.FC = () => {
           return;
         }
         
-        // Запрашиваем данные пользователя с сервера
         const response = await fetch(`${import.meta.env.VITE_BACK_API}/me`, {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -54,12 +54,10 @@ const OnlineChat: React.FC = () => {
           const userData = await response.json();
           console.log('✅ Получен пользователь:', userData.id, userData.name);
           
-          // Обновляем кэш
           updateUserCache(userData);
           setCurrentUser(userData);
         } else {
           console.error('❌ Ошибка получения пользователя:', response.status);
-          // Пробуем получить из localStorage как fallback
           const storedUser = localStorage.getItem('user');
           if (storedUser) {
             const user = JSON.parse(storedUser);
@@ -106,54 +104,65 @@ const OnlineChat: React.FC = () => {
     scrollToBottom();
   }, [localMessages]);
 
-  // Загружаем чаты БЕЗ изменения имен отправителей
+  // Загружаем чаты при получении данных
   useEffect(() => {
     if (chatsData?.buyerChats && currentUserId) {
-      // НЕ МЕНЯЕМ ИМЕНА ОТПРАВИТЕЛЕЙ - оставляем как есть с сервера
+      console.log('📥 Загружены чаты покупателя:', chatsData.buyerChats.length);
       setChats(chatsData.buyerChats);
-      
-      if (selectedChat) {
-        const currentChat = chatsData.buyerChats.find(chat => chat.id === selectedChat.id);
-        if (currentChat) {
-          setLocalMessages([...currentChat.messages]);
-        }
+    }
+  }, [chatsData, currentUserId]);
+
+  // Синхронизация сообщений при изменении чатов или выборе чата
+  useEffect(() => {
+    if (selectedChat) {
+      const updatedChat = chats.find(chat => chat.id === selectedChat.id);
+      if (updatedChat) {
+        console.log('🔄 Синхронизирую сообщения для чата:', selectedChat.id, 'сообщений:', updatedChat.messages.length);
+        setLocalMessages([...updatedChat.messages]);
       }
     }
-  }, [chatsData, selectedChat, currentUserId]);
+  }, [chats, selectedChat]);
 
-  // Обработчик WebSocket событий
+  // Обработчик WebSocket событий для чата
   useEffect(() => {
     if (!selectedChat || !currentUserId) return;
     
     const channelName = `chat.${selectedChat.id}`;
-    console.log(`🔄 Подписываюсь на канал: ${channelName}`);
+    console.log(`🔄 Подписываюсь на канал чата: ${channelName}`);
     
     try {
       const channel = echo.private(channelName);
       
       channel.subscribed(() => {
-        console.log(`✅ УСПЕШНО ПОДПИСАЛСЯ на приватный канал: ${channelName}`);
+        console.log(`✅ УСПЕШНО ПОДПИСАЛСЯ на канал чата: ${channelName}`);
       });
       
-      // Слушаем NewMessage
       channel.listen('.NewMessage', (e: any) => { 
-        console.log('📨 NewMessage получено:', e);
+        console.log('📨 NewMessage получено в канале чата:', e);
         
         if (e.message) {
           setLocalMessages(prev => {
-            // Проверяем, нет ли уже такого сообщения
             const exists = prev.some(msg => msg.id === e.message.id);
             if (exists) return prev;
             
             const withoutTemp = prev.filter(msg => !isTempMessage(msg));
-            
-            // НЕ МЕНЯЕМ ИМЯ ОТПРАВИТЕЛЯ - оставляем как пришло с сервера
             return [...withoutTemp, e.message];
           });
+          
+          setChats(prev => prev.map(chat => {
+            if (chat.id === selectedChat.id) {
+              const updatedMessages = [...(chat.messages || []), e.message];
+              return {
+                ...chat,
+                messages: updatedMessages,
+                lastMessage: e.message
+              };
+            }
+            return chat;
+          }));
         }
       });
       
-      // Слушаем MessageRead
       channel.listen('.MessageRead', (e: any) => {
         console.log('👁️ MessageRead получено:', e);
         
@@ -169,7 +178,7 @@ const OnlineChat: React.FC = () => {
       });
       
       channel.error((error: any) => {
-        console.error('❌ Ошибка подписки на канал:', error);
+        console.error('❌ Ошибка подписки на канал чата:', error);
       });
 
       return () => {
@@ -179,9 +188,31 @@ const OnlineChat: React.FC = () => {
         echo.leave(channelName);
       };
     } catch (error: any) {
-      console.error('❌ Ошибка создания канала:', error);
+      console.error('❌ Ошибка создания канала чата:', error);
     }
   }, [selectedChat, currentUserId]);
+
+  useEffect(() => {
+    if (!currentUserId) return;
+    
+    const channelName = `user.${currentUserId}`;
+    
+    try {
+      const channel = echo.private(channelName);
+      
+      channel.listen('.NewMessage', (e: any) => {
+        console.log('📨 Новое сообщение в личном канале:', e);
+      });
+      
+      return () => {
+        channel.stopListening('.NewMessage');
+        echo.leave(channelName);
+      };
+      
+    } catch (error) {
+        console.error('❌ Ошибка личного канала покупателя:', error);
+    }
+  }, [currentUserId]);
 
   // Мониторинг WebSocket подключения
   useEffect(() => {
@@ -217,7 +248,6 @@ const OnlineChat: React.FC = () => {
     }
 
     try {
-      // Оптимистичное обновление
       const tempMessage = {
         id: `temp-${Date.now()}`,
         content: newMessage.trim(),
@@ -233,7 +263,6 @@ const OnlineChat: React.FC = () => {
       setLocalMessages(prev => [...prev, tempMessage]);
       setNewMessage('');
 
-      // ✅ ВЫЗОВ МУТАЦИИ
       const result = await sendMessage({
         variables: {
           chat_id: selectedChat.id.toString(),
@@ -245,14 +274,11 @@ const OnlineChat: React.FC = () => {
 
       if (result.data?.sendMessage) {
         console.log('💾 Сообщение сохранено в БД, ID:', result.data.sendMessage.id);
-        // WebSocket событие само обновит сообщение
       }
 
     } catch (error: any) {
       console.error('❌ ОШИБКА МУТАЦИИ:', error);
       message.error('Ошибка отправки: ' + error.message);
-      
-      // Откатываем оптимистичное обновление
       setLocalMessages(prev => prev.filter(msg => !isTempMessage(msg)));
     }
   };
@@ -265,16 +291,22 @@ const OnlineChat: React.FC = () => {
   };
 
   const handleSelectChat = useCallback(async (chat: Chat) => {
+    console.log('🎯 Выбран чат:', chat.id);
     setSelectedChat(chat);
     
-    // НЕ МЕНЯЕМ ИМЕНА ОТПРАВИТЕЛЕЙ - оставляем как есть с сервера
-    setLocalMessages([...chat.messages]);
+    const updatedChat = chats.find(c => c.id === chat.id);
+    if (updatedChat) {
+      console.log('📥 Загружаю сообщения для чата:', chat.id, 'сообщений:', updatedChat.messages.length);
+      setLocalMessages([...updatedChat.messages]);
+    } else {
+      setLocalMessages([...chat.messages]);
+    }
     setNewMessage('');
 
     if (currentUserId) {
       await handleMarkMessagesAsRead(chat.id);
     }
-  }, [currentUserId]);
+  }, [chats, currentUserId]);
 
   const handleMarkMessagesAsRead = async (chatId: string) => {
     if (!currentUserId) return;
@@ -305,12 +337,10 @@ const OnlineChat: React.FC = () => {
   
   const getSenderName = (message: any): string => {
     if (!message?.sender) return 'Неизвестный';
-    // Просто возвращаем имя отправителя как есть
     return message.sender.name || 'Неизвестный';
   };
 
   const isOwnMessage = (message: any): boolean => {
-    // Сравниваем ID отправителя с currentUserId
     return message?.sender?.id?.toString() === currentUserId;
   };
 
@@ -329,9 +359,26 @@ const OnlineChat: React.FC = () => {
     chat.car_card?.description?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleDebug = () => {
+    console.log('🔍 Отладка пользователя:', {
+      currentUserId,
+      currentUserName,
+      localStorageToken: localStorage.getItem('token'),
+      localStorageUser: localStorage.getItem('user'),
+      chatsCount: chats.length,
+      chats: chats,
+      selectedChatId: selectedChat?.id,
+      localMessagesCount: localMessages.length
+    });
+  };
+
   if (loadingUser) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <div className={styles.loadingContainer}>
         <Spin size="large" tip="Загрузка данных пользователя..." />
       </div>
     );
@@ -339,7 +386,7 @@ const OnlineChat: React.FC = () => {
 
   if (!currentUser) {
     return (
-      <div style={{ padding: 20, textAlign: 'center' }}>
+      <div className={styles.unauthorizedContainer}>
         <h3>Пользователь не авторизован</h3>
         <p>Токен: {localStorage.getItem('token') ? '✅ есть' : '❌ нет'}</p>
         <Button type="primary" onClick={() => window.location.reload()}>
@@ -353,245 +400,156 @@ const OnlineChat: React.FC = () => {
   if (chatsError) return <div>Ошибка загрузки чатов: {chatsError.message}</div>;
 
   return (
-    <div style={{ display: 'flex', height: '100%', gap: 16, position: 'relative' }}>
-      {/* Кнопка отладки */}
-      <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 1000 }}>
-        <Button 
-          size="small" 
-          onClick={() => {
-            console.log('🔍 Отладка пользователя:', {
-              currentUserId,
-              currentUserName,
-              localStorageToken: localStorage.getItem('token'),
-              localStorageUser: localStorage.getItem('user'),
-            });
-          }}
-        >
-          Отладка
-        </Button>
+    <div className={styles.onlineChat}>
+      <div className={styles.onlineChat__debugButton}>
+        <Button size="small" onClick={handleDebug}>Отладка</Button>
       </div>
 
       {/* Левая панель - список чатов */}
-      <Card 
-        title="Мои чаты" 
-        style={{ width: 400, display: 'flex', flexDirection: 'column' }}
-        styles={{
-          body: { 
-            padding: 0,
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            overflow: 'hidden'
-          }
-        }}
-      >
-        {/* Статус подключения */}
-        <div style={{ 
-          padding: '8px', 
-          background: isConnected ? '#f6ffed' : '#fff2f0',
-          borderBottom: '1px solid #d9d9d9',
-          fontSize: '12px',
-          marginBottom: '16px',
-          flexShrink: 0
-        }}>
-          <div>WebSocket: <strong>{isConnected ? '✅ Подключен' : '❌ Отключен'}</strong></div>
-          <div style={{ fontSize: '10px', marginTop: '4px' }}>
-            Пользователь: {currentUserName} (ID: {currentUserId})
-          </div>
-        </div>
+      <div className={styles.onlineChat__sidebar}>
+        <Card title="Мои чаты" className={styles.chatsCard}>
+          <div className={styles.chatsCard__body}>
+            <div className={`${styles.chatsCard__status} ${!isConnected ? styles['chatsCard__status--disconnected'] : ''}`}>
+              <div>WebSocket: <strong>{isConnected ? '✅ Подключен' : '❌ Отключен'}</strong></div>
+              <div className={styles.chatsCard__userInfo}>
+                Пользователь: {currentUserName} (ID: {currentUserId})
+              </div>
+            </div>
 
-        <div style={{ padding: '0 16px', flexShrink: 0 }}>
-          <CreateChatButton onChatCreated={refetch} />
-          <Input
-            placeholder="Поиск по продавцам..."
-            value={searchTerm}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
-            style={{ marginBottom: 16 }}
-          />
-        </div>
-        
-        {/* Список чатов */}
-        <div style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
-          <List
-            dataSource={filteredChats}
-            loading={chatsLoading}
-            renderItem={(chat: Chat) => (
-              <List.Item
-                key={chat.id}
-                style={{
-                  cursor: 'pointer',
-                  background: selectedChat?.id === chat.id ? '#f0f8ff' : 'white',
-                  padding: '12px',
-                  border: selectedChat?.id === chat.id ? '1px solid #1890ff' : '1px solid transparent'
-                }}
-                onClick={() => handleSelectChat(chat)}
-              >
-                <List.Item.Meta
-                  avatar={
-                    <Badge count={chat.unreadCount} size="small">
-                      <Avatar 
-                        icon={<UserOutlined />} 
-                        src={chat.seller.avatar} 
-                      />
-                    </Badge>
-                  }
-                  title={chat.seller.name}
-                  description={
-                    <div>
-                      <div style={{ 
-                        whiteSpace: 'nowrap', 
-                        overflow: 'hidden', 
-                        textOverflow: 'ellipsis',
-                        fontSize: '12px',
-                        fontWeight: 'bold'
-                      }}>
-                        {chat.car_card?.description || 'Объявление'}
-                      </div>
-                      {chat.lastMessage && (
-                        <>
-                          <div style={{ 
-                            whiteSpace: 'nowrap', 
-                            overflow: 'hidden', 
-                            textOverflow: 'ellipsis',
-                            fontSize: '12px'
-                          }}>
-                            {getSenderName(chat.lastMessage)}: {chat.lastMessage.content}
+            <div className={styles.chatsCard__search}>
+              <CreateChatButton onChatCreated={refetch} />
+              <Input
+                placeholder="Поиск по продавцам..."
+                value={searchTerm}
+                onChange={handleSearch}
+                style={{ marginBottom: 16 }}
+              />
+            </div>
+            
+            <div className={styles.chatsCard__list}>
+              <List
+                dataSource={filteredChats}
+                loading={chatsLoading}
+                renderItem={(chat: Chat) => (
+                  <List.Item
+                    className={`${styles.chatList__item} ${selectedChat?.id === chat.id ? styles['chatList__item--selected'] : ''}`}
+                    onClick={() => handleSelectChat(chat)}
+                  >
+                    <List.Item.Meta
+                      avatar={
+                        <Badge count={chat.unreadCount} size="small">
+                          <Avatar icon={<UserOutlined />} src={chat.seller.avatar} />
+                        </Badge>
+                      }
+                      title={chat.seller.name}
+                      description={
+                        <div>
+                          <div className={styles.chatList__description__title}>
+                            {chat.car_card?.description || 'Объявление'}
                           </div>
-                          <div style={{ fontSize: '10px', color: '#999' }}>
-                            {new Date(chat.lastMessage.created_at).toLocaleString()}
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  }
-                />
-              </List.Item>
-            )}
-          />
-        </div>
-      </Card>
+                          {chat.lastMessage && (
+                            <>
+                              <div className={styles.chatList__description__message}>
+                                {getSenderName(chat.lastMessage)}: {chat.lastMessage.content}
+                              </div>
+                              <div className={styles.chatList__description__time}>
+                                {new Date(chat.lastMessage.created_at).toLocaleString()}
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      }
+                    />
+                  </List.Item>
+                )}
+              />
+            </div>
+          </div>
+        </Card>
+      </div>
 
       {/* Правая панель - выбранный чат */}
-      <Card 
-        title={
-          selectedChat 
-            ? `Чат с ${selectedChat.seller.name}`
-            : "Выберите чат"
-        }
-        style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
-        styles={{
-          body: { 
-            padding: 0,
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            overflow: 'hidden'
-          }
-        }}
-      >
-        {selectedChat ? (
-          <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
-            {/* Заголовок */}
-            <div style={{ padding: '16px', borderBottom: '1px solid #f0f0f0', flexShrink: 0 }}>
-              <h4 style={{ margin: 0 }}>Объявление: {selectedChat.car_card.description}</h4>
-              <p style={{ margin: '8px 0 0 0', color: '#666' }}>Цена: {selectedChat.car_card.price} ₽</p>
-            </div>
+      <div className={styles.onlineChat__chatArea}>
+        <Card 
+          title={selectedChat ? `Чат с ${selectedChat.seller.name}` : "Выберите чат"}
+          className={styles.chatCard}
+        >
+          <div className={styles.chatCard__body}>
+            {selectedChat ? (
+              <>
+                <div className={styles.chatCard__header}>
+                  <h4 className={styles.chatCard__title}>Объявление: {selectedChat.car_card.description}</h4>
+                  <p className={styles.chatCard__price}>Цена: {selectedChat.car_card.price} ₽</p>
+                </div>
 
-            {/* История сообщений */}
-            <div 
-              style={{ 
-                flex: 1,
-                minHeight: 0,
-                overflowY: 'auto', 
-                padding: '16px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px'
-              }}
-            >
-              {localMessages.map((message) => {
-                const messageId = message?.id || `msg-${message?.created_at || Date.now()}-${Math.random()}`;
-                const content = message?.content || '';
-                const createdAt = message?.created_at || new Date().toISOString();
-                const isOwn = isOwnMessage(message);
-                
-                return (
-                  <div 
-                    key={messageId}
-                    style={{ 
-                      padding: '12px', 
-                      background: isOwn ? '#e6f7ff' : '#f0f0f0',
-                      borderRadius: '8px',
-                      alignSelf: isOwn ? 'flex-end' : 'flex-start',
-                      maxWidth: '70%'
-                    }}
-                  >
-                    {!isOwn && (
-                      <strong style={{ display: 'block', marginBottom: '4px' }}>
-                        {getSenderName(message)}:
-                      </strong>
-                    )}
-                    <div>{content}</div>
-                    <div style={{ 
-                      fontSize: '12px', 
-                      color: '#999', 
-                      marginTop: '4px',
-                      textAlign: isOwn ? 'right' : 'left'
-                    }}>
-                      {new Date(createdAt).toLocaleString()}
-                      {isTempMessage(message) && ' ⏳'}
+                <div className={styles.chatCard__messages}>
+                  {localMessages.length === 0 ? (
+                    <div className={styles.emptyState}>
+                      <MessageOutlined className={styles.emptyState__icon} />
+                      <div>Нет сообщений в этом чате</div>
+                      <div className={styles.emptyState__message}>Начните общение первым</div>
                     </div>
-                  </div>
-                );
-              })}
-              <div ref={messagesEndRef} />
-            </div>
+                  ) : (
+                    localMessages.map((message) => {
+                      const messageId = message?.id || `msg-${Date.now()}-${Math.random()}`;
+                      const content = message?.content || '';
+                      const createdAt = message?.created_at || new Date().toISOString();
+                      const isOwn = isOwnMessage(message);
+                      
+                      return (
+                        <div 
+                          key={messageId}
+                          className={`${styles.message} ${isOwn ? styles['message--own'] : ''}`}
+                        >
+                          {!isOwn && (
+                            <strong className={styles.message__sender}>
+                              {getSenderName(message)}:
+                            </strong>
+                          )}
+                          <div>{content}</div>
+                          <div className={`${styles.message__time} ${isOwn ? styles['message__time--right'] : styles['message__time--left']}`}>
+                            {new Date(createdAt).toLocaleString()}
+                            {isTempMessage(message) && <span className={styles.message__temp} />}
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                  <div ref={messagesEndRef} />
+                </div>
 
-            {/* Поле ввода сообщения */}
-            <div style={{ 
-              display: 'flex', 
-              gap: '8px', 
-              padding: '16px', 
-              borderTop: '1px solid #f0f0f0',
-              flexShrink: 0,
-              background: 'white'
-            }}>
-              <Input.TextArea
-                placeholder="Введите сообщение..."
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                onKeyPress={handleKeyPress}
-                rows={2}
-                style={{ flex: 1 }}
-                disabled={sending}
-              />
-              <Button 
-                type="primary" 
-                onClick={handleSendMessage}
-                loading={sending}
-                style={{ alignSelf: 'flex-end', height: 'auto' }}
-              >
-                Отправить
-              </Button>
-            </div>
+                <div className={styles.chatCard__inputArea}>
+                  <Input.TextArea
+                    placeholder="Введите сообщение..."
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    rows={2}
+                    style={{ flex: 1 }}
+                    disabled={sending}
+                  />
+                  <Button 
+                    type="primary" 
+                    onClick={handleSendMessage}
+                    loading={sending}
+                    style={{ alignSelf: 'flex-end', height: 'auto' }}
+                  >
+                    Отправить
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <div className={styles.emptyState}>
+                <MessageOutlined className={styles.emptyState__icon} />
+                <div>Выберите чат для общения</div>
+                <div className={styles.emptyState__message}>
+                  WebSocket: {isConnected ? '✅ Подключен' : '❌ Отключен'}
+                </div>
+              </div>
+            )}
           </div>
-        ) : (
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center', 
-            height: '100%',
-            color: '#999',
-            flexDirection: 'column'
-          }}>
-            <MessageOutlined style={{ fontSize: 48, marginBottom: 16 }} />
-            <div>Выберите чат для общения</div>
-            <div style={{ marginTop: 8, fontSize: 12 }}>
-              WebSocket: {isConnected ? '✅ Подключен' : '❌ Отключен'}
-            </div>
-          </div>
-        )}
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 };

@@ -8,8 +8,10 @@ export const SEND_MESSAGE = gql`
       sender {
         id
         name
+        avatar
       }
       created_at
+      read
     }
   }
 `;
@@ -20,16 +22,6 @@ export const MARK_MESSAGES_AS_READ = gql`
       success
       message
       count
-      messages {
-        id
-        content
-        read
-        updated_at
-        sender {
-          id
-          name
-        }
-      }
     }
   }
 `;
@@ -41,15 +33,18 @@ export const START_CHAT = gql`
       buyer {
         id
         name
+        avatar
       }
       seller {
         id
         name
+        avatar
       }
       car_card {
         id
         description
         price
+        year
       }
       messages {
         id
@@ -57,10 +52,13 @@ export const START_CHAT = gql`
         sender {
           id
           name
+          avatar
         }
         created_at
         read
       }
+      unreadCount
+      created_at
     }
   }
 `;
