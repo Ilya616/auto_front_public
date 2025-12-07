@@ -26,7 +26,6 @@ export default function CreateCardNew() {
       error: (error) => {
         sessionStorage.removeItem("token");
         navigate(`/auth-new`);
-        console.log(error);
       },
     });
   }, []);

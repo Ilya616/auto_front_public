@@ -8,6 +8,8 @@ import LkNew from "./components/pages/LkNew/LkNew";
 import AuthNew from "./components/pages/AuthNew/AuthNew";
 import RegisterNews from "./components/pages/RegisterNews/RegisterNews";
 import CreateCardPage from "./components/pages/CreateCardPage/CreateCardPage";
+import CardPage from "./components/pages/CardPage/CardPage";
+import Test from "./components/Test";
 
 export let routes = createBrowserRouter([
   {
@@ -38,5 +40,13 @@ export let routes = createBrowserRouter([
   {
     path: "/register-new",
     Component: RegisterNews,
+  },
+  {
+    path: "/card/:card_id",
+    Component: CardPage,
+  },
+  {
+    path: "/test",
+    Component: Test,
   },
 ]);

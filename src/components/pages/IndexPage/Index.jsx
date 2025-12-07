@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import IndexLayout from "../../Layouts/IndexLayout/IndexLayout";
 import CarCard from "@uiComponents/CarCard/CarCard";
 import { request } from "../../Libs/request";
@@ -10,30 +10,83 @@ import { useDispatch } from "react-redux";
 import { deleteDataPhoto } from "../../../store/createCard";
 let VITE_BACK_API = import.meta.env.VITE_BACK_API;
 
-export default function Index() {
+function Index() {
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState();
   const contentStyle = {
     padding: 50,
     background: "rgba(0, 0, 0, 0.05)",
     borderRadius: 4,
   };
   const content = <div style={contentStyle} />;
-  useEffect(() => {
-    dispatch(deleteDataPhoto([]));
+  const updateList = useCallback(async (list = 1) => {
     request({
-      url: VITE_BACK_API + "/get-card",
-      method: "get",
+      url: VITE_BACK_API + "/graphql",
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+      data: JSON.stringify({
+        query: `
+          query GetCards {
+            cards(page: ${list}, per_page: 10){
+              id
+              category{
+                type
+              }
+              drive{
+                drive
+              }
+              mark{
+                name
+              }
+              model{
+                model
+              }
+              price
+              engine{
+                type
+              }
+              transmission{
+                transmission
+              }
+              bodywork{
+                bodywork
+              }
+              color{
+                title
+              }
+              modification{
+                title
+              }
+              user{
+                avatar
+                name
+                location
+              }
+              location
+              mileage
+              year
+              availability
+              images{
+                image
+              }
+            }
+          }
+        `,
+      }),
       callback: (response) => {
-        setData(response.data.data);
-        console.log(response.data.data);
+        setData(response.data.data.cards);
         setLoader(false);
       },
       error: (error) => {
         console.log(error);
       },
     });
+
     if (sessionStorage.getItem("token")) {
       request({
         method: "POST",
@@ -48,47 +101,47 @@ export default function Index() {
       });
     }
   }, []);
+  useEffect(() => {
+    dispatch(deleteDataPhoto([]));
+    setLoader(true);
+    updateList();
+  }, []);
   return (
     <>
-      <IndexLayout cars={CARS}>
+      <IndexLayout updateList={updateList} cars={data}>
         {!loader ? (
           <>
-            {data.map((element) => (
-              <CarCard
-                key={element.id}
-                dataPath={element.dataImg}
-                model={element.modelName}
-                age={element.modelAge}
-                text={element.availability}
-                price={element.price}
-                description={element.description}
-                specifications={element.specifications}
-                category={element.category}
-                feature={null}
-                sign={element.sign}
-                location={element.location}
-                user={element.user}
-              />
-            ))}
+            {data != undefined
+              ? data.map((element, index) => (
+                  <CarCard
+                    id={element.id}
+                    key={index}
+                    dataPath={element.images}
+                    model={element.model}
+                    mark={element.mark}
+                    age={element.year}
+                    text={element.availability}
+                    price={element.price}
+                    description={[element.color.title]}
+                    specifications={[
+                      element.modification.title,
+                      element.engine.type,
+                      element.drive.drive + " привод",
+                    ]}
+                    category={[
+                      element.bodywork.bodywork,
+                      element.transmission.transmission,
+                    ]}
+                    feature={null}
+                    sign={element.sign}
+                    location={element.location}
+                    user={element.user}
+                    mileage={element.mileage}
+                  />
+                ))
+              : ""}
           </>
         ) : (
-          //           CARS.map((element) => (
-          //   <CarCard
-          //     key={element.id}
-          //     dataPath={element.dataImg}
-          //     model={element.modelName}
-          //     age={element.modelAge}
-          //     text={element.text}
-          //     price={element.price}
-          //     description={element.description}
-          //     specifications={element.specifications}
-          //     category={element.category}
-          //     feature={element.feature}
-          //     sign={element.sign}
-          //     location={element.location}
-          //   />
-          // ))
-
           <>
             <Flex gap="middle">
               <Spin tip="Loading" size="large">
@@ -101,3 +154,5 @@ export default function Index() {
     </>
   );
 }
+
+export default memo(Index);

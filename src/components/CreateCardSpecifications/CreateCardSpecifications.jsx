@@ -56,36 +56,13 @@ export default function CreateCardSpecifications(props) {
         );
         setLoader(false);
       },
-      error: (error) => {
-        // sessionStorage.removeItem("token");
-        // navigate(`/auth-new`);
-        // console.log(error);
-      },
+      error: (error) => {},
     });
   }, []);
 
-  // отправка итоговых данных
   function loadAdvertisement() {
     let token = sessionStorage.getItem("token");
     console.log(data);
-
-    // setLoader(true);
-    // request({
-    //   method: "POST",
-    //   url: VITE_BACK_API + "/card/create",
-    //   data: data,
-    //   headers: `Authorization: Bearer ${token}`,
-    //   callback: (response) => {
-    //     dispatch(deleteDataPhoto([]));
-    //     setLoader(false);
-    //     navigate(`/lk`);
-    //   },
-    //   error: (error) => {
-    //     setLoader(false);
-
-    //     console.log(error);
-    //   },
-    // });
   }
 
   function setImage(evt) {
@@ -98,12 +75,8 @@ export default function CreateCardSpecifications(props) {
       method: "post",
       url: VITE_BACK_API + "/download",
       data: formData,
-      callback: (response) => {
-        console.log(response);
-      },
-      error: (error) => {
-        console.log(error);
-      },
+      callback: (response) => {},
+      error: (error) => {},
     });
   }
 

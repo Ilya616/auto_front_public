@@ -54,13 +54,11 @@ export default function AuthContent() {
     let copy = Object.assign({}, authUser);
     copy.email = evt.target.value;
     setAuthUser(copy);
-    console.log(evt.target.value);
   }
   function changePassword(evt) {
     let copy = Object.assign({}, authUser);
     copy.password = evt.target.value;
     setAuthUser(copy);
-    console.log(evt.target.value);
   }
   function onAuthRequest() {
     setLoader(true);
@@ -71,7 +69,6 @@ export default function AuthContent() {
       callback: (response) => {
         if (response.data.hasOwnProperty("token")) {
           sessionStorage.setItem("token", response.data.token);
-          // console.log(response.data);
           dispatch(setUser(response.data));
           setLoader(false);
           navigate(`/lk`);
@@ -91,7 +88,6 @@ export default function AuthContent() {
   function isValidate(evt) {
     evt.preventDefault();
     let validator = validateAuth(authUser);
-    console.log(validator);
     if (Object.getOwnPropertyNames(validator).length == 0) {
       onAuthRequest();
     } else {

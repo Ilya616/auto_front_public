@@ -36,16 +36,13 @@ export default function CreateCardCollapse(props) {
     },
   ];
 
-  const onChange = (key) => {
-    // console.log(key);
-  };
   function changeData(data, id) {
     dispatch(changeDataYear(data));
     setChoise({ active_id: id });
   }
   return (
     <>
-      <Collapse defaultActiveKey={["1"]} onChange={onChange} items={items} />
+      <Collapse defaultActiveKey={["1"]} items={items} />
     </>
   );
 }

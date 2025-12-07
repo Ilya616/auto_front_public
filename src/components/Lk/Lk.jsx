@@ -6,6 +6,7 @@ import { Flex, Spin } from "antd";
 import AdvertisementTable from "../AdvertisementTable/AdvertisementTable";
 import { Link, useNavigate } from "react-router";
 import { request } from "../Libs/request";
+import { Pagination } from "antd";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../store/userMake";
@@ -118,11 +119,13 @@ export default function Lk() {
       },
       error: (error) => {
         console.log(error);
-      },      
-      
+      },
     });
+  }
 
-
+  function onChange(evt) {
+    console.log(evt);
+    // props.updateList(evt);
   }
   return (
     <div className={styles.page}>
@@ -180,6 +183,7 @@ export default function Lk() {
           <p>Список объявлений</p>
           <div className={styles.advertisement}>
             <AdvertisementTable cards={cards} />
+            <Pagination onChange={onChange} defaultCurrent={1} total={50} />
           </div>
           {modal ? (
             <ModalInfo open={modal}>

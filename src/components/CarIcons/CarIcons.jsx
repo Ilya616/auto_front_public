@@ -6,8 +6,7 @@ export default function CarIcons(props) {
     <div className={styles.main}>
       <div className={styles.main__text}>
         <span>
-          {props.cars.length}{" "}
-          {props.cars.length > 0 ? "Предложения" : "Предложений"}
+          {props.cars ? props.cars.length + " Предложений" : "Предложений 0"}
         </span>
       </div>
       <div className={styles.main__filter}>

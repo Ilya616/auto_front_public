@@ -14,9 +14,6 @@ let VITE_BACK_STORAGE = import.meta.env.VITE_BACK_STORAGE;
 export default function Header() {
   const user = useSelector((state) => state.userMake.value);
 
-  const onChange = (checked) => {
-    console.log(`switch to ${checked}`);
-  };
   return (
     <div className={styles.header}>
       <div className={styles.header__logo}>

@@ -5,7 +5,10 @@
 .displayN {
   display: none;
 }
-
+.flex-position {
+  display: flex;
+  flex-wrap: wrap;
+}
 @font-face {
   font-family: "YS Text Medium Regular";
   src: url("https://db.onlinewebfonts.com/t/55b3b22e91fcf995e6a087241e519670.eot");

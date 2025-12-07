@@ -35,16 +35,13 @@ export default function CreateEngineCollapse(props) {
     },
   ];
 
-  const onChange = (key) => {
-    // console.log(key);
-  };
   function changeData(data, id) {
     dispatch(changeDataEngine({ engine: data, id: id }));
     setChoise({ active_id: id });
   }
   return (
     <>
-      <Collapse defaultActiveKey={["1"]} onChange={onChange} items={items} />
+      <Collapse defaultActiveKey={["1"]} items={items} />
     </>
   );
 }

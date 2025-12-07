@@ -45,11 +45,7 @@ export default function CreateModificCollapse(props) {
         mode: props.data[evt.target.value - 1].title,
       })
     );
-    console.log(evt.target.value);
   }
-  //   function changeData(data, id) {
-  //     dispatch(changeDataMode({ mode: data, id: id }));
-  //     setChoise({ active_id: id });
-  //   }
+
   return <Collapse defaultActiveKey={["1"]} items={items} />;
 }

@@ -1,0 +1,39 @@
+.main {
+  display: flex;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+.card {
+  &__slider {
+    width: 250px;
+  }
+  &__img {
+    width: 100%;
+    border-radius: 10px;
+    background-color: aqua;
+  }
+  &__head {
+    margin: 0;
+  }
+  &__content {
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 60px;
+  }
+  &__text {
+    margin: 0;
+    font-weight: 400;
+    font-size: 15px;
+  }
+}
+.content {
+  display: flex;
+
+  &__text {
+    font-weight: 400;
+    color: #a1a1a1;
+    font-size: 15px;
+  }
+}
