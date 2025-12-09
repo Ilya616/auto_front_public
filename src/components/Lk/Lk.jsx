@@ -14,7 +14,14 @@ import { deleteDataPhoto } from "../../store/createCard";
 import ModalInfo from "../UI/Components/ModalInfo/ModalInfo";
 import Button from "../UI/Components/Button/Button";
 
+import { useLazyQuery } from '@apollo/client/react';
+
+
+
 import axios from "axios";
+import { GET_ROLES, GET_USER } from "../../graphql/queries";
+import SellerChatButton from "../UI/Components/SellerChat/SellerChatButton";
+import OnlineChatButton from "../UI/Components/OnlineChat/OnlineChatButton";
 
 let VITE_BACK_API = import.meta.env.VITE_BACK_API;
 let VITE_BACK_STORAGE = import.meta.env.VITE_BACK_STORAGE;
@@ -60,6 +67,49 @@ export default function Lk() {
       });
     }
   }, []);
+  const [getRoles, { loading: rolesLoading, error: rolesError, data: rolesData }] = useLazyQuery(GET_ROLES);
+  const [getUser, { loading: usersLoading, error: usersError, data: usersData }] = useLazyQuery(GET_USER, {
+  onCompleted: (data) => {
+    console.log('GraphQL User query completed:', data);
+  },
+  onError: (error) => {
+    console.error('GraphQL User query error:', error);
+  }
+});
+  
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    
+    if (token) {
+      getRoles();
+      getUser();
+    }
+  }, [getRoles, getUser]);
+  
+    
+  
+    const renderChatByRole = () => {
+      // if (!rolesData?.roles) return null;
+  if (usersLoading) {
+        return <div>Загрузка пользователя...</div>;
+      }
+      if (!usersData) {
+      return <div>Данные не загружены</div>;
+    }
+      if (!usersData.me) {
+        return <div>Пользователь не найден</div>;
+      }
+      const currentUser = usersData.me;
+      
+      if (currentUser.role_id == 2) {
+        return <SellerChatButton />;
+      } else if (currentUser.role_id == 1) {
+        return <OnlineChatButton />;
+      }
+      
+      return null;
+    };
+    
   function getData(id) {
     request({
       method: "post",
@@ -180,6 +230,7 @@ export default function Lk() {
               </div>
             </div>
           </div>
+          {renderChatByRole()}
           <p>Список объявлений</p>
           <div className={styles.advertisement}>
             <AdvertisementTable cards={cards} />

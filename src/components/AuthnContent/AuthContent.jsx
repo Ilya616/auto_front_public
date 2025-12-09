@@ -69,6 +69,16 @@ export default function AuthContent() {
       callback: (response) => {
         if (response.data.hasOwnProperty("token")) {
           sessionStorage.setItem("token", response.data.token);
+          localStorage.setItem('token', response.data.token);
+
+          if (response.data.user && response.data.user.id) {
+            sessionStorage.setItem('user_id', response.data.user.id);
+            localStorage.setItem('token', response.data.token);
+          } else {
+            console.log(' No user data in response');
+          }
+
+          window.location.reload();
           dispatch(setUser(response.data));
           setLoader(false);
           navigate(`/lk`);
